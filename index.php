@@ -1,9 +1,35 @@
+<?php
+  error_reporting(0);
+  include_once 'connectdb.php';
+  session_start();
+
+  if(isset($_POST['btn_login'])){  //if btn_login is pressed
+    $useremail = $_POST['txt_email'];  //email from the input
+    $password = $_POST['txt_password']; //password from the input
+
+    //echo $email." - ".$password;  //testing if email and password are sending through post when clicking the button
+
+    $select = $pdo->prepare("SELECT * FROM tbl_user WHERE useremail = '$useremail' AND password='$password'");
+    $select->execute();
+    $row = $select->fetch(PDO::FETCH_ASSOC);  // take the values using fetch_assoc and stored them in $row 
+
+    if($row['useremail'] == $useremail AND $row['password'] == $password){  // comparing the values with the input
+      echo $success = 'Login Successfully';
+      header('refresh:1;dashboard.php');  //if condition is true, refresh, and after one sec redirect to dashboard.php
+    }else{
+      echo 'Login Fail';
+    }
+
+  }
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Log in</title>
+  <title>POS | Log in</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -30,37 +56,32 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="index2.html"><b>INVENTORY</b>POS</a>
+    <a href="index.php"><b>INVENTORY</b>POS</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
 
-    <form action="index2.html" method="post">
+    <form action="" method="post">
       <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="Email">
+        <input type="email" class="form-control" placeholder="Email" name="txt_email">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Password">
+        <input type="password" class="form-control" placeholder="Password" name="txt_password">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
         <div class="col-xs-8">
-          <div class="checkbox icheck">
-            <label>
-            </label>
-          </div>
+          <a href="#">I forgot my password</a><br>
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <button type="submit" name="btn_login" class="btn btn-primary btn-block btn-flat">Login</button>
         </div>
         <!-- /.col -->
       </div>
     </form>
-
-    <a href="#">I forgot my password</a><br>
 
   </div>
   <!-- /.login-box-body -->
