@@ -1,5 +1,12 @@
 <!-- this is the header -->
-<?php 
+<?php
+  include_once 'connectdb.php';
+  session_start();
+
+  if($_SESSION['useremail']==""){   //this username comes from the session variable in index.php, we are restricting the access
+    header('location:index.php');
+  }
+
   include_once'headeruser.php';
 ?>
 

@@ -14,9 +14,20 @@
     $row = $select->fetch(PDO::FETCH_ASSOC);  // take the values using fetch_assoc and stored them in $row 
 
     if($row['useremail']==$useremail AND $row['password']==$password AND $row['role']=="Admin"){  // comparing the values with the input
+      $_SESSION['userid'] = $row['userid'];  //database column is store in a session variable userid type $_session
+      $_SESSION['username'] = $row['username'];
+      $_SESSION['useremail'] = $row['useremail'];
+      $_SESSION['role'] = $row['role'];
+
       echo $success = 'Login Successfully';
       header('refresh:1;dashboard.php');  //if condition is true, refresh, and after one sec redirect to dashboard.php
-    }else if($row['useremail']==$useremail AND $row['password']==$password AND $row['role']=="User"){
+    
+    }else if($row['useremail']==$useremail AND $row['password']==$password AND $row['role']=="User"){  // comparing the values with the input
+      $_SESSION['userid'] = $row['userid'];  //database column is store in a session variable userid type $_session
+      $_SESSION['username'] = $row['username'];
+      $_SESSION['useremail'] = $row['useremail'];
+      $_SESSION['role'] = $row['role'];
+
       echo $success = 'Login Successfully';
       header('refresh:1;user.php');  //if condition is true, refresh, and after one sec redirect to user.php
     }else{

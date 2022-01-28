@@ -1,6 +1,13 @@
 <!-- this is the header -->
 <?php 
-  include_once'header.php';
+  include_once 'connectdb.php';
+  session_start();
+
+  if($_SESSION['useremail']==""){   //this username comes from the variable in index.php, we are restricting the access
+    header('location:index.php');
+  }
+
+  include_once 'header.php'; 
 ?>
 
   <!-- Content Wrapper. Contains page content -->
