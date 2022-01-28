@@ -13,9 +13,12 @@
     $select->execute();
     $row = $select->fetch(PDO::FETCH_ASSOC);  // take the values using fetch_assoc and stored them in $row 
 
-    if($row['useremail'] == $useremail AND $row['password'] == $password){  // comparing the values with the input
+    if($row['useremail']==$useremail AND $row['password']==$password AND $row['role']=="Admin"){  // comparing the values with the input
       echo $success = 'Login Successfully';
       header('refresh:1;dashboard.php');  //if condition is true, refresh, and after one sec redirect to dashboard.php
+    }else if($row['useremail']==$useremail AND $row['password']==$password AND $row['role']=="User"){
+      echo $success = 'Login Successfully';
+      header('refresh:1;user.php');  //if condition is true, refresh, and after one sec redirect to user.php
     }else{
       echo 'Login Fail';
     }
