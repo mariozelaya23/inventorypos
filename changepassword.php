@@ -4,6 +4,29 @@
   session_start();
 
   include_once'header.php';
+
+  //when click on update password button we get out values in the textboxes from user into variables
+
+  if(isset($_POST['btnupdate'])){
+    $oldpassword_txt=$_POST['txtoldpass'];
+    $newpassword_txt=$_POST['txtnewpass'];
+    $confpassword_txt=$_POST['txtconfpass'];
+
+    //echo $oldpassword_txt."-".$newpassword_txt."-".$confpassword_txt;
+
+    //using of select query we get out database record according to useremail
+    $email = $_SESSION['useremail'];
+    $select = $pdo->prepare("SELECT * FROM tbl_user where useremail='$email'");
+    $select->execute();
+    $row = $select->fetch(PDO::FETCH_ASSOC);
+
+    echo $row['useremail'];
+    echo $row['username'];
+
+
+
+  }
+
 ?>
 
   <!-- Content Wrapper. Contains page content -->
@@ -33,7 +56,7 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form role="form">
+            <form role="form" action="" method="POST">
               <div class="box-body">
                 <div class="form-group">
                   <label for="exampleInputPassword1">Old Password</label>

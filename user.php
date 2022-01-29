@@ -3,7 +3,7 @@
   include_once 'connectdb.php';
   session_start();
 
-  if($_SESSION['useremail']==""){   //this username comes from the session variable in index.php, we are restricting the access
+  if($_SESSION['useremail']=="" OR $_SESSION['role']=="Admin"){   //this username comes from the session variable in index.php, we are restricting the access
     header('location:index.php');
   }
 
