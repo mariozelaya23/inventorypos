@@ -1,3 +1,13 @@
+<!-- jQuery 3 -->
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- iCheck -->
+<script src="plugins/iCheck/icheck.min.js"></script>
+<!-- sweetalert -->
+<script src="bower_components/sweetalert/sweetalert.js" ></script>
+
+
 <?php
   error_reporting(0);
   include_once 'connectdb.php';
@@ -19,8 +29,21 @@
       $_SESSION['useremail'] = $row['useremail'];
       $_SESSION['role'] = $row['role'];
 
-      echo $success = 'Login Successfully';
-      header('refresh:1;dashboard.php');  //if condition is true, refresh, and after one sec redirect to dashboard.php
+      // success alert login for admin
+      echo '<script type="text/javascript">
+      jQuery(function validation(){
+
+        swal({
+          title: "Good job!'.$_SESSION['username'].'",
+          text: "Detail Matched",
+          icon: "success",
+          button: "Loading...",
+        });
+
+      })
+
+      </script>';
+      header('refresh:2;dashboard.php');  //if condition is true, refresh, and after one sec redirect to dashboard.php
     
     }else if($row['useremail']==$useremail AND $row['password']==$password AND $row['role']=="User"){  // comparing the values with the input
       $_SESSION['userid'] = $row['userid'];  //database column is store in a session variable userid type $_session
@@ -28,10 +51,21 @@
       $_SESSION['useremail'] = $row['useremail'];
       $_SESSION['role'] = $row['role'];
 
-      echo $success = 'Login Successfully';
-      header('refresh:1;user.php');  //if condition is true, refresh, and after one sec redirect to user.php
-    }else{
-      echo 'Login Fail';
+      // success alert login for user
+      echo '<script type="text/javascript">
+      jQuery(function validation(){
+
+        swal({
+          title: "Good job!'.$_SESSION['username'].'",
+          text: "Detail Matched",
+          icon: "success",
+          button: "Loading...",
+        });
+
+      })
+
+      </script>';
+      header('refresh:2;user.php');  //if condition is true, refresh, and after one sec redirect to user.php
     }
 
   }
@@ -78,11 +112,11 @@
 
     <form action="" method="post">
       <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="Email" name="txt_email">
+        <input type="email" class="form-control" placeholder="Email" name="txt_email" required>
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Password" name="txt_password">
+        <input type="password" class="form-control" placeholder="Password" name="txt_password" required>
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
@@ -102,12 +136,9 @@
 </div>
 <!-- /.login-box -->
 
-<!-- jQuery 3 -->
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap 3.3.7 -->
-<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- iCheck -->
-<script src="plugins/iCheck/icheck.min.js"></script>
+
+
+
 <script>
   $(function () {
     $('input').iCheck({
