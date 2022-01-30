@@ -5,7 +5,7 @@
 
   include_once'header.php';
 
-  //when click on update password button we get out values in the textboxes from user into variables
+  //1- when click on update password button we get out values in the textboxes from user into variables
 
   if(isset($_POST['btnupdate'])){
     $oldpassword_txt=$_POST['txtoldpass'];
@@ -14,15 +14,78 @@
 
     //echo $oldpassword_txt."-".$newpassword_txt."-".$confpassword_txt;
 
-    //using of select query we get out database record according to useremail
+    //2- using of select query we get out database record according to useremail
     $email = $_SESSION['useremail'];
     $select = $pdo->prepare("SELECT * FROM tbl_user where useremail='$email'");
     $select->execute();
     $row = $select->fetch(PDO::FETCH_ASSOC);
 
-    echo $row['useremail'];
-    echo $row['username'];
+    $useremail_db = $row['useremail'];
+    $password_db = $row['password'];
 
+    //3- we compare userinput and database values
+    if($oldpassword_txt==$password_db){
+      if($newpassword_txt==$confpassword_txt){
+        //4- if values match then we run update query
+        $update=$pdo->prepare("UPDATE tbl_user SET password=:pass WHERE useremail=:email");
+        $update->bindParam(':pass', $confpassword_txt);
+        $update->bindParam(':email', $email);
+
+        if($update->execute()){
+          echo '<script type="text/javascript">
+          jQuery(function validation(){
+    
+            swal({
+              title: "Good Job",
+              text: "Your password has been changed successfully",
+              icon: "success",
+              button: "Ok",
+            });
+    
+          })
+          </script>';
+        }else{
+          echo '<script type="text/javascript">
+          jQuery(function validation(){
+    
+            swal({
+              title: "Error!",
+              text: "Query Fail",
+              icon: "error",
+              button: "Ok",
+            });
+    
+          })
+          </script>';
+        }
+      }else{
+        echo '<script type="text/javascript">
+        jQuery(function validation(){
+  
+          swal({
+            title: "Oops!",
+            text: "Your new password and confirm password dont match",
+            icon: "warning",
+            button: "Ok",
+          });
+  
+        })
+        </script>';
+      }
+    }else{
+      echo '<script type="text/javascript">
+      jQuery(function validation(){
+
+        swal({
+          title: "Warning",
+          text: "Your Password is wrong please fill the right password",
+          icon: "warning",
+          button: "Ok",
+        });
+
+      })
+      </script>';
+    }
 
 
   }
@@ -60,15 +123,15 @@
               <div class="box-body">
                 <div class="form-group">
                   <label for="exampleInputPassword1">Old Password</label>
-                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password" name="txtoldpass">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password" name="txtoldpass" required>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputPassword1">New Password</label>
-                  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="txtnewpass">
+                  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="txtnewpass" required>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputPassword1">Confirm Password</label>
-                  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="txtconfpass">
+                  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="txtconfpass" required>
                 </div>
               </div>
               <!-- /.box-body -->
