@@ -66,6 +66,20 @@
 
       </script>';
       header('refresh:2;user.php');  //if condition is true, refresh, and after one sec redirect to user.php
+    }else{
+      echo '<script type="text/javascript">
+      jQuery(function validation(){
+
+        swal({
+          title: "Email or Password is wrong",
+          text: "Details not Matched",
+          icon: "error",
+          button: "Ok",
+        });
+
+      })
+
+      </script>';
     }
 
   }
