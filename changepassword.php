@@ -3,7 +3,15 @@
   include_once 'connectdb.php';
   session_start();
 
-  include_once'header.php';
+  if($_SESSION['useremail']==""){   //this username comes from the variable in index.php, we are restricting the access
+    header('location:index.php');
+  }
+
+  if($_SESSION['role']=="Admin"){
+    include_once'header.php';
+  }else{
+    include_once'headeruser.php';
+  }
 
   //1- when click on update password button we get out values in the textboxes from user into variables
 
