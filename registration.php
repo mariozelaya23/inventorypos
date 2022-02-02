@@ -28,33 +28,34 @@
         -------------------------->
 
       <!-- general form elements -->
-      <div class="box box-primary">
+      <div class="box box-info">
         <div class="box-header with-border">
           <h3 class="box-title">Registration Form</h3>
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form role="form">
+        <form role="form" action="" method="POST">
           <div class="box-body">
             <!-- because in bootstrap the page is diveded in 12 columns, I'm going to devide this 12 columns in 4 colums on left and 8 columns on right -->
             <div class="col-md-4"> <!-- 4 columns on the left side -->  <!-- FORM -->
               <div class="form-group">
-                  <label for="exampleInputEmail1">Name</label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter name">
+                  <label>Name</label>
+                  <input type="text" class="form-control" placeholder="Enter name" name="txt_name">
               </div>
               <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                <label>Email address</label>
+                <input type="email" class="form-control" placeholder="Enter email" name="txt_email">
               </div>
               <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                <label>Password</label>
+                <input type="password" class="form-control" placeholder="Password" name="txt_password">
               </div>  
               <div class="form-group">
                   <label>Role</label>
-                  <select class="form-control">
-                    <option>Admin</option>
+                  <select class="form-control" name="select_role">
+                    <option value="" disabled selected>Select role</option>
                     <option>User</option>
+                    <option>Admin</option>
                   </select>
                 </div>
             </div><!-- /. FORM -->
@@ -67,6 +68,7 @@
                     <th>Email</th>
                     <th>Password</th>
                     <th>Role</th>
+                    <th>Delete</th>
                   </tr>
                 </thead>
                 <tbody> <!-- table body --> 
@@ -94,7 +96,7 @@
           <!-- /.box-body -->
 
           <div class="box-footer">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-info">Save</button>
           </div>
         </form>
       </div>
