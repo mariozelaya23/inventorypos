@@ -3,7 +3,64 @@
   include_once 'connectdb.php';
   session_start();
 
-  include_once'header.php';
+  if($_SESSION['useremail']==""){   //this username comes from the variable in index.php, we are restricting the access
+    header('location:index.php');
+  }
+
+  if($_SESSION['role']=="Admin"){
+    include_once'header.php';
+  }else{
+    include_once'headeruser.php';
+  }
+
+
+  //1- when click on save button we get out values in the textboxes from user into variables
+  if(isset($_POST['btnsave'])){
+    $name_txt=$_POST['txtname'];
+    $email_txt=$_POST['txtemail'];
+    $password_txt=$_POST['txtpassword'];
+    $role_txt=$_POST['selectrole'];
+
+    //echo $name_txt.' '.$email_txt.' '.$password_txt.' '.$role_txt;
+
+    //2- using of select query we insert into the database
+    $insert = $pdo->prepare("INSERT INTO tbl_user (username,useremail,password,role ) 
+    VALUES(:name,:email,:pass,:role)"); // using placeholders
+    
+    $insert->bindParam(':name', $name_txt);  //passing placeholders into variables
+    $insert->bindParam(':email', $email_txt);
+    $insert->bindParam(':pass', $password_txt);
+    $insert->bindParam(':role', $role_txt);
+
+    if($insert->execute()){
+      echo '<script type="text/javascript">
+      jQuery(function validation(){
+
+        swal({
+          title: "Good Job",
+          text: "'.$role_txt.' inserted",
+          icon: "success",
+          button: "Ok",
+        });
+
+      })
+      </script>';
+    }else{
+      echo '<script type="text/javascript">
+      jQuery(function validation(){
+
+        swal({
+          title: "Error!",
+          text: "Query Fail",
+          icon: "error",
+          button: "Ok",
+        });
+
+      })
+      </script>';
+    }
+  } 
+
 ?>
 
   <!-- Content Wrapper. Contains page content -->
@@ -40,24 +97,25 @@
             <div class="col-md-4"> <!-- 4 columns on the left side -->  <!-- FORM -->
               <div class="form-group">
                   <label>Name</label>
-                  <input type="text" class="form-control" placeholder="Enter name" name="txt_name">
+                  <input type="text" class="form-control" placeholder="Enter name" name="txtname" required>
               </div>
               <div class="form-group">
                 <label>Email address</label>
-                <input type="email" class="form-control" placeholder="Enter email" name="txt_email">
+                <input type="email" class="form-control" placeholder="Enter email" name="txtemail" required>
               </div>
               <div class="form-group">
                 <label>Password</label>
-                <input type="password" class="form-control" placeholder="Password" name="txt_password">
+                <input type="password" class="form-control" placeholder="Password" name="txtpassword" required>
               </div>  
               <div class="form-group">
                   <label>Role</label>
-                  <select class="form-control" name="select_role">
+                  <select class="form-control" name="selectrole" required>
                     <option value="" disabled selected>Select role</option>
                     <option>User</option>
                     <option>Admin</option>
                   </select>
                 </div>
+                <button type="submit" class="btn btn-info" name="btnsave">Save</button>
             </div><!-- /. FORM -->
             <div class="col-md-8"> <!-- 8 columns on the right side -->  <!-- TABLE -->
               <table class="table table-striped">
@@ -96,7 +154,7 @@
           <!-- /.box-body -->
 
           <div class="box-footer">
-            <button type="submit" class="btn btn-info">Save</button>
+            
           </div>
         </form>
       </div>
