@@ -3,9 +3,11 @@
   include_once 'connectdb.php';
   session_start();
 
-  if($_SESSION['useremail']==""){   //this username comes from the variable in index.php, we are restricting the access
+  if($_SESSION['useremail']=="" OR $_SESSION['role']=="User"){   //this username comes from the variable in index.php, we are restricting the access
     header('location:index.php');
   }
+
+  include_once'header.php';
 
   if($_SESSION['role']=="Admin"){
     include_once'header.php';
@@ -13,9 +15,29 @@
     include_once'headeruser.php';
   }
 
+  // error_reporting(0);
+  // $id=$_GET['id'];  //this id comes from the URL
+  // $delete = $pdo->prepare("DELETE FROM tbl_user WHERE userid=".$id);
+  
+  // if($delete->execute()){
+  //   echo '<script type="text/javascript">
+  //   jQuery(function validation(){
+
+  //     swal({
+  //       title: "Good Job!",
+  //       text: "User has been deleted successfully",
+  //       icon: "success",
+  //       button: "Ok",
+  //     });
+
+  //   })
+  //   </script>';
+  // }
+
 
   //1- when click on save button we get out values in the textboxes from user into variables
   if(isset($_POST['btnsave'])){
+
     $name_txt=$_POST['txtname'];
     $email_txt=$_POST['txtemail'];
     $password_txt=$_POST['txtpassword'];
@@ -79,7 +101,7 @@
         }
       }
     }
-  } 
+  }
 
 ?>
 
@@ -162,7 +184,9 @@
                         <td>'.$row->useremail.'</td>
                         <td>'.$row->password.'</td>
                         <td>'.$row->role.'</td>
-                        <td></td>
+                        <td>
+                        <a href="registration.php?id='.$row->userid.'" class="btn btn-danger" role="button"><span class="glyphicon glyphicon-trash" title="delete"></span></a>
+                        </td>
                         </tr>
                       ';
                     }
