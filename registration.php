@@ -15,24 +15,26 @@
     include_once'headeruser.php';
   }
 
-  // error_reporting(0);
-  // $id=$_GET['id'];  //this id comes from the URL
-  // $delete = $pdo->prepare("DELETE FROM tbl_user WHERE userid=".$id);
   
-  // if($delete->execute()){
-  //   echo '<script type="text/javascript">
-  //   jQuery(function validation(){
-
-  //     swal({
-  //       title: "Good Job!",
-  //       text: "User has been deleted successfully",
-  //       icon: "success",
-  //       button: "Ok",
-  //     });
-
-  //   })
-  //   </script>';
-  // }
+  if($_GET['id']){ //this id comes from the URL
+    $id=$_GET['id'];
+    $delete = $pdo->prepare("DELETE FROM tbl_user WHERE userid=:id");
+    $delete->bindParam(':id', $id);
+    if($delete->execute()){
+      echo '<script type="text/javascript">
+      jQuery(function validation(){
+  
+        swal({
+          title: "Good Job!",
+          text: "User has been deleted successfully",
+          icon: "success",
+          button: "Ok",
+        });
+  
+      })
+      </script>';
+    }
+  }
 
 
   //1- when click on save button we get out values in the textboxes from user into variables
@@ -185,7 +187,7 @@
                         <td>'.$row->password.'</td>
                         <td>'.$row->role.'</td>
                         <td>
-                        <a href="registration.php?id='.$row->userid.'" class="btn btn-danger" role="button"><span class="glyphicon glyphicon-trash" title="delete"></span></a>
+                        <a href="registration.php?id='.$row->userid.'" class="btn btn-danger" role="button" name="btndelete"><span class="glyphicon glyphicon-trash" title="delete"></span></a>
                         </td>
                         </tr>
                       ';
