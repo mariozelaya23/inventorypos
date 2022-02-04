@@ -23,41 +23,61 @@
 
     //echo $name_txt.' '.$email_txt.' '.$password_txt.' '.$role_txt;
 
-    //2- using of select query we insert into the database
-    $insert = $pdo->prepare("INSERT INTO tbl_user (username,useremail,password,role ) 
-    VALUES(:name,:email,:pass,:role)"); // using placeholders
-    
-    $insert->bindParam(':name', $name_txt);  //passing placeholders into variables
-    $insert->bindParam(':email', $email_txt);
-    $insert->bindParam(':pass', $password_txt);
-    $insert->bindParam(':role', $role_txt);
+    //this condition will prevent to insert the same email
+    if(isset($_POST['txtemail'])){
+      $select = $pdo->prepare("SELECT useremail FROM tbl_user WHERE useremail='$email_txt'");
+      $select->execute();
+      if($select->rowCount() > 0){  //if row in database is affected / if rowcount value is greater than cero that means that the email exist
+        echo '<script type="text/javascript">
+        jQuery(function validation(){
 
-    if($insert->execute()){
-      echo '<script type="text/javascript">
-      jQuery(function validation(){
+          swal({
+            title: "Warning",
+            text: "'.$email_txt.' already exist! Please try different email!",
+            icon: "warning",
+            button: "Ok",
+          });
 
-        swal({
-          title: "Good Job",
-          text: "'.$role_txt.' inserted",
-          icon: "success",
-          button: "Ok",
-        });
-
-      })
-      </script>';
-    }else{
-      echo '<script type="text/javascript">
-      jQuery(function validation(){
-
-        swal({
-          title: "Error!",
-          text: "Query Fail",
-          icon: "error",
-          button: "Ok",
-        });
-
-      })
-      </script>';
+        })
+        </script>';
+      }else{
+        //2- using of select query we insert into the database
+        $insert = $pdo->prepare("INSERT INTO tbl_user (username,useremail,password,role ) 
+        VALUES(:name,:email,:pass,:role)"); // using placeholders
+        
+        $insert->bindParam(':name', $name_txt);  //passing placeholders into variables
+        $insert->bindParam(':email', $email_txt);
+        $insert->bindParam(':pass', $password_txt);
+        $insert->bindParam(':role', $role_txt);
+  
+        if($insert->execute()){
+          echo '<script type="text/javascript">
+          jQuery(function validation(){
+  
+            swal({
+              title: "Good Job",
+              text: "'.$role_txt.' inserted",
+              icon: "success",
+              button: "Ok",
+            });
+  
+          })
+          </script>';
+        }else{
+          echo '<script type="text/javascript">
+          jQuery(function validation(){
+  
+            swal({
+              title: "Error!",
+              text: "Query Fail",
+              icon: "error",
+              button: "Ok",
+            });
+  
+          })
+          </script>';
+        }
+      }
     }
   } 
 
