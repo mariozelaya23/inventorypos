@@ -187,7 +187,7 @@
                         <td>'.$row->password.'</td>
                         <td>'.$row->role.'</td>
                         <td>
-                        <a href="registration.php?id='.$row->userid.'" class="btn btn-danger" role="button" name="btndelete"><span class="glyphicon glyphicon-trash" title="delete"></span></a>
+                          <a href="registration.php?id='.$row->userid.'" class="btn btn-danger" role="button" name="btndelete"><span class="glyphicon glyphicon-trash" title="delete"></span></a>
                         </td>
                         </tr>
                       ';
