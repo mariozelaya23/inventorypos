@@ -56,7 +56,66 @@
         </script>';
       }
     }
-  }
+  } // btnsave (add new category) ends here
+
+
+  if(isset($_POST['btnupdate'])){
+    $category = $_POST['txtcategory'];
+    $id = $_POST['txtid'];
+
+    if(empty($category)){
+      $errorupdate ='<script type="text/javascript">
+      jQuery(function validation(){
+  
+        swal({
+          title: "Field Empty",
+          text: "Please type a category!",
+          icon: "error",
+          button: "Ok",
+        });
+  
+      })
+      </script>';
+      echo $errorupdate;
+    }
+
+    if(!isset($errorupdate)){  //if user type something
+      $update = $pdo->prepare("UPDATE tbl_category SET category=:category WHERE catid=".$id);
+      $update->bindParam(':category',$category);
+
+      if($update->execute()){
+        echo '<script type="text/javascript">
+        jQuery(function validation(){
+    
+          swal({
+            title: "Good Job!",
+            text: "Category has been updated",
+            icon: "success",
+            button: "Ok",
+          });
+    
+        })
+        </script>';
+      }else{
+        echo '<script type="text/javascript">
+        jQuery(function validation(){
+  
+          swal({
+            title: "Error!",
+            text: "Query Fail",
+            icon: "error",
+            button: "Ok",
+          });
+  
+        })
+        </script>';
+      }
+    }
+
+
+  } // btn update code ends here
+
+
 
 ?>
 
