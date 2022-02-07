@@ -88,18 +88,40 @@
           <h3 class="box-title">Category Form</h3>
         </div>
         <!-- /.box-header -->
-        <!-- form start -->
-        <form role="form" action="" method="POST">
-          <div class="box-body">
-            <!-- because in bootstrap the page is diveded in 12 columns, I'm going to devide this 12 columns in 4 colums on left and 8 columns on right -->
+        <div class="box-body">
+          <!-- because in bootstrap the page is diveded in 12 columns, I'm going to devide this 12 columns in 4 colums on left and 8 columns on right -->
+          <!-- form start -->
+          <form role="form" action="" method="POST">
+            <?php 
+              if(isset($_POST['btnedit'])){
+                  $select = $pdo->prepare("SELECT * FROM tbl_category WHERE catid=".$_POST['btnedit']);
+                  $select->execute();
+                  if($select){
+                    $row=$select->fetch(PDO::FETCH_OBJ);
+                    echo'
+                      <div class="col-md-4"> <!-- 4 columns on the left side -->  <!-- FORM -->
+                        <div class="form-group">
+                            <label>Category</label>
+                            <input type="hidden" class="form-control" value="'.$row->catid.'" placeholder="Enter category" name="txtid">
+                            <input type="text" class="form-control" value="'.$row->category.'" placeholder="Enter category" name="txtcategory">
+                        </div>
+                        <button type="submit" class="btn btn-info" name="btnupdate">Update</button>
+                      </div><!-- /. FORM -->
+                    ';
+                  }
+              }else{
+                echo'
+                  <div class="col-md-4"> <!-- 4 columns on the left side -->  <!-- FORM -->
+                    <div class="form-group">
+                        <label>Category</label>
+                        <input type="text" class="form-control" placeholder="Enter category" name="txtcategory">
+                    </div>
+                    <button type="submit" class="btn btn-warning" name="btnsave">Save</button>
+                  </div><!-- /. FORM -->
+                ';
+              }
             
-            <div class="col-md-4"> <!-- 4 columns on the left side -->  <!-- FORM -->
-              <div class="form-group">
-                  <label>Category</label>
-                  <input type="text" class="form-control" placeholder="Enter category" name="txtcategory">
-              </div>
-                <button type="submit" class="btn btn-warning" name="btnsave">Save</button>
-            </div><!-- /. FORM -->
+            ?>
 
             <div class="col-md-8"> <!-- 8 columns on the right side -->  <!-- TABLE -->
               <table class="table table-striped">
@@ -133,14 +155,14 @@
                   ?>
                 </tbody>
               </table>
-            </div> 
-          </div>
+            </div>
+          </form> 
+        </div>
           <!-- /.box-body -->
 
           <div class="box-footer">
             
           </div>
-        </form>
       </div>
 
 
