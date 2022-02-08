@@ -4,6 +4,7 @@
   session_start(); 
   include_once'header.php';
 
+  //*********** ADD BUTTON STARTS HERE ***********/
   if(isset($_POST['btnsave'])){
     $category = $_POST['txtcategory'];
     //echo $category;
@@ -33,7 +34,7 @@
         jQuery(function validation(){
     
           swal({
-            title: "Good Job!",
+            title: "Added!!",
             text: "Category has been inserted",
             icon: "success",
             button: "Ok",
@@ -56,9 +57,9 @@
         </script>';
       }
     }
-  } // btnsave (add new category) ends here
+  }//***********ADD BUTTON ENDS HERE ***********/
 
-
+  //*********** UPDATE BUTTON STARTS HERE ***********/
   if(isset($_POST['btnupdate'])){
     $category = $_POST['txtcategory'];
     $id = $_POST['txtid'];
@@ -81,6 +82,9 @@
 
     if(!isset($errorupdate)){  //if user type something
       $update = $pdo->prepare("UPDATE tbl_category SET category=:category WHERE catid=".$id);
+      //$update = $pdo->prepare("UPDATE tbl_category SET category='$category' WHERE catid=".$id);  (this is without placeholder)
+      //if you use the code from above (commented one), comment the line beneth this comment, you dont need it
+      //but the recommended way to code this, is the one that is right know to prevent sql injection
       $update->bindParam(':category',$category);
 
       if($update->execute()){
@@ -88,7 +92,7 @@
         jQuery(function validation(){
     
           swal({
-            title: "Good Job!",
+            title: "Updated!",
             text: "Category has been updated",
             icon: "success",
             button: "Ok",
@@ -113,9 +117,41 @@
     }
 
 
-  } // btn update code ends here
+  }//***********UPDATE BUTTON ENDS HERE ***********/
 
 
+  //*********** DELETE BUTTON STARTS HERE ***********/
+  if(isset($_POST['btndelete'])){
+    $delete = $pdo->prepare("DELETE FROM tbl_category WHERE catid=".$_POST['btndelete']);
+    
+    if($delete->execute()){
+      echo '<script type="text/javascript">
+      jQuery(function validation(){
+  
+        swal({
+          title: "Deleted!",
+          text: "Category has been deleted",
+          icon: "success",
+          button: "Ok",
+        });
+  
+      })
+      </script>';
+    }else{
+      echo '<script type="text/javascript">
+      jQuery(function validation(){
+
+        swal({
+          title: "Error!",
+          text: "Category has not been deleted",
+          icon: "error",
+          button: "Ok",
+        });
+
+      })
+      </script>';
+    }
+  }//***********DELETE BUTTON ENDS HERE ***********/
 
 ?>
 
@@ -157,6 +193,7 @@
                   $select->execute();
                   if($select){
                     $row=$select->fetch(PDO::FETCH_OBJ);
+                    //HERE ARE TWO FORMS
                     echo'
                       <div class="col-md-4"> <!-- 4 columns on the left side -->  <!-- FORM -->
                         <div class="form-group">
