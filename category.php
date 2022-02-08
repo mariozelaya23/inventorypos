@@ -2,7 +2,17 @@
 <?php
   include_once 'connectdb.php';
   session_start(); 
-  include_once'header.php';
+
+  if($_SESSION['useremail']=="" OR $_SESSION['role']=="User"){   //this username comes from the variable in index.php, we are restricting the access
+    header('location:index.php');
+  }
+
+  if($_SESSION['role']=="Admin"){
+    include_once'header.php';
+  }else{
+    include_once'headeruser.php';
+  }
+
 
   //*********** ADD BUTTON STARTS HERE ***********/
   if(isset($_POST['btnsave'])){
@@ -220,7 +230,7 @@
             ?>
 
             <div class="col-md-8"> <!-- 8 columns on the right side -->  <!-- TABLE -->
-              <table class="table table-striped">
+              <table id="tablecategory" class="table table-striped">
                 <thead> <!-- table heading -->  
                   <tr>
                     <th>#</th>
@@ -268,6 +278,13 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+
+  <!-- Call this single function -->
+  <script>
+    $(document).ready( function () {
+    $('#tablecategory').DataTable();
+    } );
+  </script>
 
   <?php 
     include_once 'footer.php';
