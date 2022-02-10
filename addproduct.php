@@ -37,9 +37,9 @@
         | Your Page Content Here |
         -------------------------->
       
-        <div class="box box-success">
+        <div class="box box-info">
           <div class="box-header with-border">
-            <h3 class="box-title">Product Form</h3>
+            <h3 class="box-title"><a href="productlist.php" class="btn btn-primary" role="button">Back to Product List</a></h3>
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -93,6 +93,9 @@
                 </div>
               </div>
             </form>
+          </div>
+          <div class="box-footer">
+            <button type="submit" class="btn btn-info" name="btnpadd">Add Product</button>
           </div>
         </div>
 
