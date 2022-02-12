@@ -99,7 +99,7 @@ if(isset($_POST['btnpadd'])){
       swal({
         title: "Warning!",
         text: "Only jpg, png and gif can be upload",
-        icon: "Error",
+        icon: "error",
         button: "Ok",
       });
 
