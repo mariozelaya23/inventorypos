@@ -1,6 +1,17 @@
 <!-- this is the header -->
 <?php 
-  include_once'header.php';
+    include_once 'connectdb.php';
+    session_start();
+  
+    if($_SESSION['useremail']=="" OR $_SESSION['role']=="User"){   //this username comes from the variable in index.php, we are restricting the access
+      header('location:index.php');
+    }
+  
+    if($_SESSION['role']=="Admin"){
+      include_once'header.php';
+    }else{
+      include_once'headeruser.php';
+    }
 ?>
 
   <!-- Content Wrapper. Contains page content -->
@@ -23,6 +34,17 @@
       <!--------------------------
         | Your Page Content Here |
         -------------------------->
+      
+      <div class="box box-warning">
+        <div class="box-header with-border">
+          <h3 class="box-title"></h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+
+        </div>
+      </div>
+
 
     </section>
     <!-- /.content -->
