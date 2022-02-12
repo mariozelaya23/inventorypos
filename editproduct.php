@@ -30,6 +30,8 @@
   //print_r($row);
 
   
+
+
 ?>
 
   <!-- Content Wrapper. Contains page content -->
@@ -64,19 +66,23 @@
             <div class="col-md-6">
               <div class="form-group">
                   <label>Product Name</label>
-                  <input type="text" class="form-control" placeholder="Enter..." name="txtpname" required>
+                  <input type="text" class="form-control" placeholder="Enter..." name="txtpname" value="<?php echo $pname_db;?>" required>
               </div>
               <div class="form-group">
                 <label>Category</label>
                 <select class="form-control" name="selectcategory" required>
-                  <option value="" disabled selected>Select category</option>  <!-- Fetching category from the database -->
+                  <option value="" disabled selected>Select category</option>  <!-- Fetching category from the category table -->
                   <?php
                     $select = $pdo->prepare("SELECT * FROM tbl_category ORDER BY catid");
                     $select->execute();
                     while($row=$select->fetch(PDO::FETCH_ASSOC)){
                       extract($row);
-                      ?>
-                      <option><?php echo $row['category']?></option>
+                      ?> <!-- $pcategory_db this comes from product table and $row['category'] comes from category table, if both are iqual, we are going to select the value -->
+                      <option <?php if($row['category']==$pcategory_db){?>
+                        selected="selected"
+                        <?php } ?> >
+
+                        <?php echo $row['category']?></option>
                       <?php
                     }
                   ?>
@@ -84,11 +90,11 @@
               </div>
               <div class="form-group">
                 <label>Purchase price</label> <!-- this is numeric field -->
-                <input type="number" min="0" step="0.01" class="form-control" placeholder="Enter..." name="txtpprice" required>
+                <input type="number" min="0" step="0.01" class="form-control" placeholder="Enter..." name="txtpprice" value="<?php echo $purchaseprice_db;?>" required>
               </div>
               <div class="form-group">
                 <label>Sale price</label> <!-- this is numeric field -->
-                <input type="number" min="0" step="0.01" class="form-control" placeholder="Enter..." name="txtsprice" required>
+                <input type="number" min="0" step="0.01" class="form-control" placeholder="Enter..." name="txtsprice" value="<?php echo $saleprice_db;?>" required>
               </div>
             </div>
             
@@ -96,14 +102,16 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Stock</label>  <!-- this is numeric field -->
-                <input type="number" min="0" step="0.01" class="form-control" placeholder="Enter..." name="txtstock" required>
+                <input type="number" min="0" step="0.01" class="form-control" placeholder="Enter..." name="txtstock" value="<?php echo $pstock_db;?>" required>
               </div>
               <div class="form-group">
                 <label>Product description</label>
-                <textarea type="text" class="form-control" placeholder="Enter..." name="txtpdescription" rows="4" required></textarea>
+                <textarea type="text" class="form-control" placeholder="Enter..." name="txtpdescription" rows="4" required><?php echo $pdescription_db;?></textarea>
               </div>
               <div class="form-group">
                 <label>Product image</label>   <!-- this myfile name comes from the code for upload a file -->
+                <img src="productimages/<?php echo $pimage_db;?>" class="img-responsive" width="150px" height="150px">
+                </br>
                 <input type="file" class="input-group" name="myfile" required>
                 <p>Upload image</p>
               </div>
