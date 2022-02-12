@@ -12,6 +12,7 @@
   }else{
     include_once'headeruser.php';
   }
+
 ?>
 
   <!-- Content Wrapper. Contains page content -->
