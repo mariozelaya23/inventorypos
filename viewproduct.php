@@ -37,13 +37,13 @@
       
       <div class="box box-warning">
         <div class="box-header with-border">
-          <h3 class="box-title">View Product</h3>
+          <h3 class="box-title"><a href="productlist.php" class="btn btn-primary" role="button">Back to Product List</a></h3>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
           
           <?php
-            $id = $_GET['id'];
+            $id = $_GET['id'];  // we are getting this id from product list <a href="viewproduct.php?id='.$row->pid.'">
             $select = $pdo->prepare("SELECT * FROM tbl_product WHERE pid=$id");
             $select->execute();
 
@@ -66,9 +66,9 @@
                 <div class="col-md-6">
                   <ul class="list-group">
                     <center><p class="list-group-item list-group-item-success"><b>Product Image</b></p></center>
-                    <li class="list-group-item">New <span class="badge">12</span></li>
-                    <li class="list-group-item">Deleted <span class="badge">5</span></li>
-                    <li class="list-group-item">Warnings <span class="badge">3</span></li>
+                    </br>
+                    <center><img src="productimages/'.$row->pimage.'" class="img-responsive" width="500px" height="500px"></center>
+
                   </ul>
                 </div>
               

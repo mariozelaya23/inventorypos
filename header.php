@@ -169,6 +169,8 @@ desired effect
         <!-- Optionally, you can add icons to the links -->
         <li><a href="dashboard.php"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
         <li><a href="category.php"><i class="fa fa-list-alt"></i> <span>Category</span></a></li>
+        <li><a href="addproduct.php"><i class="fa fa-product-hunt"></i> <span>Add Product</span></a></li>
+        <li><a href="productlist.php"><i class="fa fa-th-list"></i> <span>Product List</span></a></li>
         <li><a href="registration.php"><i class="fa fa-registered"></i> <span>Registration</span></a></li>
 
         <!-- <li class="treeview">
