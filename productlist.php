@@ -121,20 +121,35 @@
       var tdh = $(this);
       var id = $(this).attr("id");
       //alert(id);
-
-      $.ajax({
-        url:'productdelete.php',
-        type:'post',
-        data:{
-          pidd:id
-        },
-        success:function(data){
-          tdh.parents('tr').hide();
-        }
+      //sweet alert
+      swal({
+        title: "Do you want to delete the product?",
+        text: "Once deleted, you can not recover this product!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
       })
+      .then((willDelete) => {
+        if (willDelete) { //ajax code
+          $.ajax({
+            url:'productdelete.php',
+            type:'post',
+            data:{
+              pidd:id
+            },
+            success:function(data){
+              tdh.parents('tr').hide();
+            }
+          })
+          swal("Your product has been deleted!", {
+            icon: "success",
+          });
+        } else {
+          swal("Your product is safe!");
+        }
+      });
 
     });
-  
   
   });
 
