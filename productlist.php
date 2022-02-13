@@ -80,7 +80,7 @@
                       <a href="editproduct.php?id='.$row->pid.'" class="btn btn-info" role="button" name="btndelete"><span class="glyphicon glyphicon-edit" style="color=#ffffff" data-toggle="tooltip" title="Edit Product"></span></a>
                     </td>
                     <td>
-                      <a href="deleteproduct.php?id='.$row->pid.'" class="btn btn-danger" role="button" name="btndelete"><span class="glyphicon glyphicon-trash" style="color=#ffffff" data-toggle="tooltip" title="Delete Product"></span></a>
+                      <button id='.$row->pid.' class="btn btn-danger btndelete" name="btndelete"><span class="glyphicon glyphicon-trash" style="color=#ffffff" data-toggle="tooltip" title="Delete Product"></span></button>
                     </td>
                     </tr>
                   ';
@@ -111,6 +111,35 @@
     $('[data-toggle="tooltip"]').tooltip();
   } );
 </script>
+
+<!-- DELETE BUTTON AJAX CODE -->
+<script>
+  $(document).ready(function(){
+    $('.btndelete').click(function(){
+      //alert('Test');
+
+      var tdh = $(this);
+      var id = $(this).attr("id");
+      //alert(id);
+
+      $.ajax({
+        url:'productdelete.php',
+        type:'post',
+        data:{
+          pidd:id
+        },
+        success:function(data){
+          tdh.parents('tr').hide();
+        }
+      })
+
+    });
+  
+  
+  });
+
+</script>
+
 
 
 <?php 
