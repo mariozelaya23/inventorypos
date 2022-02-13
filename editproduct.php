@@ -41,9 +41,94 @@
     //upload the image
     $f_name = $_FILES['myfile']['name'];
 
-    if(!empty($f_name)){
+    if(!empty($f_name)){  //if user select an image
 
-    }else{
+      $f_tmp = $_FILES['myfile']['tmp_name'];
+      $f_size =  $_FILES['myfile']['size'];
+      $f_extension = explode('.',$f_name);
+      $f_extension= strtolower(end($f_extension));
+      $f_newfile =  uniqid().'.'. $f_extension;   
+      $store = "productimages/".$f_newfile;
+      
+      if($f_extension=='jpg' || $f_extension=='jpeg' || $f_extension=='png' || $f_extension=='gif'){
+        if($f_size>=1000000){
+          $error = '<script type="text/javascript">
+          jQuery(function validation(){
+    
+            swal({
+              title: "Error!",
+              text: "Max file size should be 1MB",
+              icon: "Warning",
+              button: "Ok",
+            });
+    
+          })
+          </script>';
+          echo $error;
+        }else{
+          if(move_uploaded_file($f_tmp,$store)){
+            $f_newfile;
+    
+            if(!isset($error)){
+              $update = $pdo->prepare("UPDATE tbl_product SET pname=:pname, pcategory=:pcategory, purchaseprice=:pprice, saleprice=:saleprice, pstock=:pstock, 
+              pdescription=:pdescription, pimage=:pimage WHERE pid=$id");
+        
+              $update->bindParam(':pname',$pname_txt);
+              $update->bindParam(':pcategory',$pcategory_txt);
+              $update->bindParam(':pprice',$purchaseprice_txt);
+              $update->bindParam(':saleprice',$saleprice_txt);
+              $update->bindParam(':pstock',$stock_txt);
+              $update->bindParam(':pdescription',$pdescription_txt);
+              $update->bindParam(':pimage',$f_newfile);  //here we are passing the new image
+          
+              if($update->execute()){
+                echo '<script type="text/javascript">
+                jQuery(function validation(){
+          
+                  swal({
+                    title: "Product updated",
+                    text: "Product updated successfully",
+                    icon: "success",
+                    button: "Ok",
+                  });
+          
+                })
+                </script>';
+              }else{
+                echo '<script type="text/javascript">
+                jQuery(function validation(){
+          
+                  swal({
+                    title: "Error!",
+                    text: "Product update Fail",
+                    icon: "error",
+                    button: "Ok",
+                  });
+          
+                })
+                </script>';
+              }
+          
+            }
+          }
+        }
+      }else{
+        $error = '<script type="text/javascript">
+        jQuery(function validation(){
+    
+          swal({
+            title: "Warning!",
+            text: "Only jpg, png and gif can be upload",
+            icon: "error",
+            button: "Ok",
+          });
+    
+        })
+        </script>';
+        echo $error;
+      }
+
+    }else{ //if user does not select an image
       $update = $pdo->prepare("UPDATE tbl_product SET pname=:pname, pcategory=:pcategory, purchaseprice=:pprice, saleprice=:saleprice, pstock=:pstock, 
       pdescription=:pdescription, pimage=:pimage WHERE pid=$id");
 
@@ -53,7 +138,7 @@
       $update->bindParam(':saleprice',$saleprice_txt);
       $update->bindParam(':pstock',$stock_txt);
       $update->bindParam(':pdescription',$pdescription_txt);
-      $update->bindParam(':pimage',$pimage_db);
+      $update->bindParam(':pimage',$pimage_db); //same image from the database
 
       if($update->execute()){
         echo '<script type="text/javascript">
@@ -87,8 +172,19 @@
 
   }
 
+  // adding this code here, will show the updated information on the form, this fix the issue when you press the update button (procedural programming)
+  $select = $pdo->prepare("SELECT * FROM tbl_product WHERE pid=$id");
+  $select->execute();
+  $row = $select->fetch(PDO::FETCH_ASSOC);
 
-
+  $id_db = $row['pid'];
+  $pname_db = $row['pname'];
+  $pcategory_db = $row['pcategory'];
+  $purchaseprice_db = $row['purchaseprice'];
+  $saleprice_db = $row['saleprice'];
+  $pstock_db = $row['pstock'];
+  $pdescription_db = $row['pdescription'];
+  $pimage_db = $row['pimage'];
 
 
 ?>
