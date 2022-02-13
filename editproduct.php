@@ -13,6 +13,7 @@
     include_once'headeruser.php';
   }
 
+  // getting the product id from product list page as well the data from that page
   $id = $_GET['id'];
   $select = $pdo->prepare("SELECT * FROM tbl_product WHERE pid=$id");
   $select->execute();
@@ -29,7 +30,65 @@
 
   //print_r($row);
 
+  if(isset($_POST['btnpupdate'])){
+    $pname_txt = $_POST['txtpname'];
+    $pcategory_txt = $_POST['selectcategory'];
+    $purchaseprice_txt = $_POST['txtpprice'];
+    $saleprice_txt = $_POST['txtsprice'];
+    $stock_txt = $_POST['txtstock']; 
+    $pdescription_txt = $_POST['txtpdescription'];
   
+    //upload the image
+    $f_name = $_FILES['myfile']['name'];
+
+    if(!empty($f_name)){
+
+    }else{
+      $update = $pdo->prepare("UPDATE tbl_product SET pname=:pname, pcategory=:pcategory, purchaseprice=:pprice, saleprice=:saleprice, pstock=:pstock, 
+      pdescription=:pdescription, pimage=:pimage WHERE pid=$id");
+
+      $update->bindParam(':pname',$pname_txt);
+      $update->bindParam(':pcategory',$pcategory_txt);
+      $update->bindParam(':pprice',$purchaseprice_txt);
+      $update->bindParam(':saleprice',$saleprice_txt);
+      $update->bindParam(':pstock',$stock_txt);
+      $update->bindParam(':pdescription',$pdescription_txt);
+      $update->bindParam(':pimage',$pimage_db);
+
+      if($update->execute()){
+        echo '<script type="text/javascript">
+        jQuery(function validation(){
+  
+          swal({
+            title: "Product updated",
+            text: "Product updated successfully",
+            icon: "success",
+            button: "Ok",
+          });
+  
+        })
+        </script>';
+      }else{
+        echo '<script type="text/javascript">
+        jQuery(function validation(){
+  
+          swal({
+            title: "Error!",
+            text: "Product update Fail",
+            icon: "error",
+            button: "Ok",
+          });
+  
+        })
+        </script>';
+      }
+
+    }
+
+  }
+
+
+
 
 
 ?>
@@ -112,7 +171,7 @@
                 <label>Product image</label>   <!-- this myfile name comes from the code for upload a file -->
                 <img src="productimages/<?php echo $pimage_db;?>" class="img-responsive" width="150px" height="150px">
                 </br>
-                <input type="file" class="input-group" name="myfile" required>
+                <input type="file" class="input-group" name="myfile">
                 <p>Upload image</p>
               </div>
             </div>
