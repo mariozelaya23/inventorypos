@@ -46,7 +46,12 @@
             <div class="col-md-6"><!-- 6 columns -->
               <div class="form-group">
                   <label>Customer Name</label>
-                  <input type="text" class="form-control" placeholder="Enter Customer Name" name="txtcustomer" required>
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                      <i class="fa fa-user"></i>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Enter Customer Name" name="txtcustomer" required>
+                  </div>
               </div>
             </div>
 
@@ -91,34 +96,79 @@
             <div class="col-md-6"><!-- 6 columns -->
               <div class="form-group">
                   <label>SubTotal</label>
-                  <input type="text" class="form-control" name="txtsubtotal" required>
+                  <div class="input-group date">
+                    <div class="input-group-addon">
+                      <i class="fa fa-usd"></i>
+                    </div>
+                    <input type="text" class="form-control" name="txtsubtotal" required>
+                  </div>
               </div>
               <div class="form-group">
                   <label>Tax (5%)</label>
-                  <input type="text" class="form-control" name="txttax" required>
+                  <div class="input-group date">
+                    <div class="input-group-addon">
+                      <i class="fa fa-usd"></i>
+                    </div>
+                    <input type="text" class="form-control" name="txttax" required>
+                  </div>
               </div>
               <div class="form-group">
                   <label>Discount</label>
-                  <input type="text" class="form-control" name="txtdiscount" required>
+                  <div class="input-group date">
+                    <div class="input-group-addon">
+                      <i class="fa fa-usd"></i>
+                    </div>
+                    <input type="text" class="form-control" name="txtdiscount" required>
+                  </div>
               </div>
             </div>
 
             <div class="col-md-6"><!-- 6 columns -->
               <div class="form-group">
                   <label>Total</label>
-                  <input type="text" class="form-control" name="txttotal" required>
+                  <div class="input-group date">
+                    <div class="input-group-addon">
+                      <i class="fa fa-usd"></i>
+                    </div>
+                    <input type="text" class="form-control" name="txttotal" required>
+                  </div>
               </div>
               <div class="form-group">
                   <label>Paid</label>
-                  <input type="text" class="form-control" name="txtpaid" required>
+                  <div class="input-group date">
+                    <div class="input-group-addon">
+                      <i class="fa fa-usd"></i>
+                    </div>
+                    <input type="text" class="form-control" name="txtpaid" required>
+                  </div>
               </div>
               <div class="form-group">
                   <label>Due</label>
-                  <input type="text" class="form-control" name="txtdue" required>
+                  <div class="input-group date">
+                    <div class="input-group-addon">
+                      <i class="fa fa-usd"></i>
+                    </div>
+                    <input type="text" class="form-control" name="txtdue" required>
+                  </div>
+              </div>
+              <label>Payment Method</label>
+              <div class="form-group">
+                <label>
+                  <input type="radio" name="r2" class="minimal-red" checked> Cash
+                </label>
+                <label>
+                  <input type="radio" name="r2" class="minimal-red"> Card
+                </label>
+                <label>
+                  <input type="radio" name="r2" class="minimal-red" > Check
+                </label>
               </div>
             </div>
           </div><!-- end row 3 -->
-
+           <!-- radio -->
+           <div align="center">
+              <input type="submit" name="btnsaveorder" value="Save Order" class="btn btn-info">
+           </div>
         </form>
       </div>
 
@@ -132,6 +182,11 @@
     //Date picker
     $('#datepicker').datepicker({
       autoclose: true
+    });
+    //Red color scheme for iCheck
+    $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+      checkboxClass: 'icheckbox_minimal-red',
+      radioClass   : 'iradio_minimal-red'
     })
   </script>
 
