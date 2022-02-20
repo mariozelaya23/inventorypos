@@ -41,16 +41,16 @@
             <h3 class="box-title">New Order</h3>
           </div>
           <!-- /.box-header -->
-          <div class="box-body"><!-- Customer and dates -->
+          <div class="box-body"><!-- Customer and dates --> <!-- row 1 -->
 
-            <div class="col-md-6">
+            <div class="col-md-6"><!-- 6 columns -->
               <div class="form-group">
                   <label>Customer Name</label>
                   <input type="text" class="form-control" placeholder="Enter Customer Name" name="txtcustomer" required>
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-6"><!-- 6 columns -->
               <!-- Date -->
               <div class="form-group">
                 <label>Date:</label>
@@ -65,14 +65,59 @@
               <!-- /.form group -->
             </div>
 
-          </div>
-          <div class="box-body"><!-- Table -->
+          </div> <!-- end of row 1 -->
+          <div class="box-body"><!-- Table --> <!-- row 2 -->
+            <div class="col-md-12"><!-- 12 columns -->
+              <table id="producttable" class="table table-striped">
+                <thead> <!-- table heading -->  
+                  <tr>
+                    <th>#</th>
+                    <th>Search Product</th>
+                    <th>Stock</th>
+                    <th>price</th>
+                    <th>Enter Quantity</th>
+                    <th>Total</th>
+                    <th>
+                    <button type="button" name="add" class="btn btn-success btn-sm btnadd" name="btnadd"><span class="glyphicon glyphicon-plus"></span></button>
+                    </th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div><!-- end row 2 -->
 
-          </div>
+          <div class="box-body"><!-- tax dis. etc --> <!-- row 3 -->
 
-          <div class="box-body"><!-- tax dis. etc -->
+            <div class="col-md-6"><!-- 6 columns -->
+              <div class="form-group">
+                  <label>SubTotal</label>
+                  <input type="text" class="form-control" name="txtsubtotal" required>
+              </div>
+              <div class="form-group">
+                  <label>Tax (5%)</label>
+                  <input type="text" class="form-control" name="txttax" required>
+              </div>
+              <div class="form-group">
+                  <label>Discount</label>
+                  <input type="text" class="form-control" name="txtdiscount" required>
+              </div>
+            </div>
 
-          </div>
+            <div class="col-md-6"><!-- 6 columns -->
+              <div class="form-group">
+                  <label>Total</label>
+                  <input type="text" class="form-control" name="txttotal" required>
+              </div>
+              <div class="form-group">
+                  <label>Paid</label>
+                  <input type="text" class="form-control" name="txtpaid" required>
+              </div>
+              <div class="form-group">
+                  <label>Due</label>
+                  <input type="text" class="form-control" name="txtdue" required>
+              </div>
+            </div>
+          </div><!-- end row 3 -->
 
         </form>
       </div>
