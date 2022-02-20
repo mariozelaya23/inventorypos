@@ -165,10 +165,12 @@
               </div>
             </div>
           </div><!-- end row 3 -->
-           <!-- radio -->
-           <div align="center">
-              <input type="submit" name="btnsaveorder" value="Save Order" class="btn btn-info">
-           </div>
+          <!-- radio -->
+          <hr>
+          <div align="center">
+            <input type="submit" name="btnsaveorder" value="Save Order" class="btn btn-info">
+          </div>
+          <hr>
         </form>
       </div>
 
@@ -188,6 +190,21 @@
       checkboxClass: 'icheckbox_minimal-red',
       radioClass   : 'iradio_minimal-red'
     })
+
+    $(document).ready(function(){
+      $(document).on('click','.btnadd',function(){ //btnadd comes from where the table started
+        var html='';
+        html+='<tr>';
+        html+='<td><input type="text" class="form-control pname" name="productname[]" readonly></td>';
+        html+='<td><input type="text" class="form-control productid" name="productid[]" required></td>';
+        html+='<td><input type="text" class="form-control stock" name="stock[]" required></td>';
+        html+='<td><input type="text" class="form-control price" name="price[]" required></td>';
+        html+='<td><input type="text" class="form-control qty" name="qty[]" required></td>';
+        html+='<td><input type="text" class="form-control total" name="total[]" required></td>';
+        $('#producttable').append(html);
+      })
+    });
+
   </script>
 
 
