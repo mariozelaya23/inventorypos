@@ -83,7 +83,7 @@
                     <th>Enter Quantity</th>
                     <th>Total</th>
                     <th>
-                    <button type="button" name="add" class="btn btn-success btn-sm btnadd" name="btnadd"><span class="glyphicon glyphicon-plus"></span></button>
+                      <center><button type="button" class="btn btn-success btn-sm btnadd" name="btnadd"><span class="glyphicon glyphicon-plus"></span></button></center>
                     </th>
                   </tr>
                 </thead>
@@ -195,13 +195,17 @@
       $(document).on('click','.btnadd',function(){ //btnadd comes from where the table started
         var html='';
         html+='<tr>';
-        html+='<td><input type="text" class="form-control pname" name="productname[]" readonly></td>';
-        html+='<td><input type="text" class="form-control productid" name="productid[]" required></td>';
-        html+='<td><input type="text" class="form-control stock" name="stock[]" required></td>';
-        html+='<td><input type="text" class="form-control price" name="price[]" required></td>';
-        html+='<td><input type="text" class="form-control qty" name="qty[]" required></td>';
-        html+='<td><input type="text" class="form-control total" name="total[]" required></td>';
+        html+='<td><input type="hidden" class="form-control pname" name="productname[]" readonly></td>';
+        html+='<td><select class="form-control productid" name="productid[]"><option value="">Select Option</option></select></td>';
+        html+='<td><input type="text" class="form-control stock" name="stock[]" readonly></td>';
+        html+='<td><input type="text" class="form-control price" name="price[]" readonly></td>';
+        html+='<td><input type="text" class="form-control qty" name="qty[]" ></td>';
+        html+='<td><input type="text" class="form-control total" name="total[]" readonly></td>';
+        html+='<td><center><button type="button" name="remove" class="btn btn-danger btn-sm btnremove"><span class="glyphicon glyphicon-remove"></span></button></center></td>';
         $('#producttable').append(html);
+      })
+      $(document).on('click','.btnremove',function(){  //when you say this is because we are working here on the button
+        $(this).closest('tr').remove();
       })
     });
 
