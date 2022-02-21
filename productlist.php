@@ -41,53 +41,55 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-          <table id="producttable" class="table table-striped">
-            <thead> <!-- table heading -->  
-              <tr>
-                <th>#</th>
-                <th>Product Name</th>
-                <th>Category</th>
-                <th>Purchased price</th>
-                <th>Sale price</th>
-                <th>Stock</th>
-                <th>Description</th>
-                <th>Image</th>
-                <th>View</th>
-                <th>Edit</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody> <!-- table body --> 
-              <?php
-                $select=$pdo->prepare("SELECT * FROM tbl_product ORDER BY pid");
-                $select->execute();
-                
-                while($row=$select->fetch(PDO::FETCH_OBJ)){  //using while to fetch all the data from the database // using FETCH_OBJ because I'm fetching each fild of the database
-                  echo '
-                    <tr>
-                    <td>'.$row->pid.'</td>
-                    <td>'.$row->pname.'</td>
-                    <td>'.$row->pcategory.'</td>
-                    <td>'.$row->purchaseprice.'</td>
-                    <td>'.$row->saleprice.'</td>
-                    <td>'.$row->pstock.'</td>
-                    <td>'.$row->pdescription.'</td>
-                    <td><img src="productimages/'.$row->pimage.'" class="img-rounded" width="40px" height="40px"></td>
-                    <td>
-                      <a href="viewproduct.php?id='.$row->pid.'" class="btn btn-success" role="button" name="btndelete"><span class="glyphicon glyphicon-eye-open" style="color=#ffffff" data-toggle="tooltip" title="View Product"></span></a>
-                    </td>
-                    <td>
-                      <a href="editproduct.php?id='.$row->pid.'" class="btn btn-info" role="button" name="btndelete"><span class="glyphicon glyphicon-edit" style="color=#ffffff" data-toggle="tooltip" title="Edit Product"></span></a>
-                    </td>
-                    <td>
-                      <button id='.$row->pid.' class="btn btn-danger btndelete" name="btndelete"><span class="glyphicon glyphicon-trash" style="color=#ffffff" data-toggle="tooltip" title="Delete Product"></span></button>
-                    </td>
-                    </tr>
-                  ';
-                }
-              ?>
-            </tbody>
-          </table>
+          <div style="overflow-x:auto">
+            <table id="producttable" class="table table-striped">
+              <thead> <!-- table heading -->  
+                <tr>
+                  <th>#</th>
+                  <th>Product Name</th>
+                  <th>Category</th>
+                  <th>Purchased price</th>
+                  <th>Sale price</th>
+                  <th>Stock</th>
+                  <th>Description</th>
+                  <th>Image</th>
+                  <th>View</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody> <!-- table body --> 
+                <?php
+                  $select=$pdo->prepare("SELECT * FROM tbl_product ORDER BY pid");
+                  $select->execute();
+                  
+                  while($row=$select->fetch(PDO::FETCH_OBJ)){  //using while to fetch all the data from the database // using FETCH_OBJ because I'm fetching each fild of the database
+                    echo '
+                      <tr>
+                      <td>'.$row->pid.'</td>
+                      <td>'.$row->pname.'</td>
+                      <td>'.$row->pcategory.'</td>
+                      <td>'.$row->purchaseprice.'</td>
+                      <td>'.$row->saleprice.'</td>
+                      <td>'.$row->pstock.'</td>
+                      <td>'.$row->pdescription.'</td>
+                      <td><img src="productimages/'.$row->pimage.'" class="img-rounded" width="40px" height="40px"></td>
+                      <td>
+                        <a href="viewproduct.php?id='.$row->pid.'" class="btn btn-success" role="button" name="btndelete"><span class="glyphicon glyphicon-eye-open" style="color=#ffffff" data-toggle="tooltip" title="View Product"></span></a>
+                      </td>
+                      <td>
+                        <a href="editproduct.php?id='.$row->pid.'" class="btn btn-info" role="button" name="btndelete"><span class="glyphicon glyphicon-edit" style="color=#ffffff" data-toggle="tooltip" title="Edit Product"></span></a>
+                      </td>
+                      <td>
+                        <button id='.$row->pid.' class="btn btn-danger btndelete" name="btndelete"><span class="glyphicon glyphicon-trash" style="color=#ffffff" data-toggle="tooltip" title="Delete Product"></span></button>
+                      </td>
+                      </tr>
+                    ';
+                  }
+                ?>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 

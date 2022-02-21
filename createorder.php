@@ -85,21 +85,23 @@
           </div> <!-- end of row 1 -->
           <div class="box-body"><!-- Table --> <!-- row 2 -->
             <div class="col-md-12"><!-- 12 columns -->
-              <table id="producttable" class="table table-striped">
-                <thead> <!-- table heading -->  
-                  <tr>
-                    <th>#</th>
-                    <th>Search Product</th>
-                    <th>Stock</th>
-                    <th>price</th>
-                    <th>Enter Quantity</th>
-                    <th>Total</th>
-                    <th>
-                      <center><button type="button" class="btn btn-success btn-sm btnadd" name="btnadd"><span class="glyphicon glyphicon-plus"></span></button></center>
-                    </th>
-                  </tr>
-                </thead>
-              </table>
+              <div style="overflow-x:auto">
+                <table id="producttable" class="table table-striped">
+                  <thead> <!-- table heading -->  
+                    <tr>
+                      <th>#</th>
+                      <th>Search Product</th>
+                      <th>Stock</th>
+                      <th>price</th>
+                      <th>Enter Quantity</th>
+                      <th>Total</th>
+                      <th>
+                        <center><button type="button" class="btn btn-success btn-sm btnadd" name="btnadd"><span class="glyphicon glyphicon-plus"></span></button></center>
+                      </th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
             </div>
           </div><!-- end row 2 -->
 
@@ -209,7 +211,7 @@
         var html='';
         html+='<tr>';
         html+='<td><input type="hidden" class="form-control pname" name="productname[]" readonly></td>';
-        html+='<td><select class="form-control productid" name="productid[]" style="width:250px"><option value="">Select Option</option><?php echo fill_product($pdo);?></select></td>';
+        html+='<td><select class="form-control productid" name="productid[]" style="width:250px";><option value="">Select Option</option><?php echo fill_product($pdo);?></select></td>';
         html+='<td><input type="text" class="form-control stock" name="stock[]" readonly></td>';
         html+='<td><input type="text" class="form-control price" name="price[]" readonly></td>';
         html+='<td><input type="text" class="form-control qty" name="qty[]" ></td>';
