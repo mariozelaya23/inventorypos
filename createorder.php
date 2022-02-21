@@ -12,6 +12,18 @@
     }else{
       include_once'headeruser.php';
     }
+
+    function fill_product($pdo){ //function passing the connection object $pdo
+      $output='';
+      $select=$pdo->prepare("SELECT * FROM tbl_product ORDER BY pname");
+      $select->execute();
+      $result=$select->fetchAll();
+
+      foreach($result as $row){
+        $output.='<option value"'.$row["pid"].'">'.$row["pname"].'</option>';
+      }
+      return $output; //return of the function
+    }
 ?>
 
   <!-- Content Wrapper. Contains page content -->
@@ -196,7 +208,7 @@
         var html='';
         html+='<tr>';
         html+='<td><input type="hidden" class="form-control pname" name="productname[]" readonly></td>';
-        html+='<td><select class="form-control productid" name="productid[]"><option value="">Select Option</option></select></td>';
+        html+='<td><select class="form-control productid" name="productid[]"><option value="">Select Option</option><?php echo fill_product($pdo);?></select></td>';
         html+='<td><input type="text" class="form-control stock" name="stock[]" readonly></td>';
         html+='<td><input type="text" class="form-control price" name="price[]" readonly></td>';
         html+='<td><input type="text" class="form-control qty" name="qty[]" ></td>';
