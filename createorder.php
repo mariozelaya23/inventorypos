@@ -211,7 +211,7 @@
         var html='';
         html+='<tr>';
         html+='<td><input type="hidden" class="form-control pname" name="productname[]" readonly></td>';
-        html+='<td><select class="form-control productid" name="productid[]" style="width:250px";><option value="">Select Option</option><?php echo fill_product($pdo);?></select></td>';
+        html+='<td><select class="form-control productid" name="productid[]" style="width:300px";><option value="">Select Option</option><?php echo fill_product($pdo);?></select></td>';
         html+='<td><input type="text" class="form-control stock" name="stock[]" readonly></td>';
         html+='<td><input type="text" class="form-control price" name="price[]" readonly></td>';
         html+='<td><input type="text" class="form-control qty" name="qty[]" ></td>';
@@ -221,6 +221,18 @@
 
         //Initialize Select2 Elements
         $('.productid').select2()
+
+        $(".productid").on('change',function(e){  //this productid comes from the function above, passing the id and the name,  $output.='<option value"'.$row["pid"].'">'.$row["pname"].'</option>';
+          var productid = this.value;
+          $.ajax({
+            url:"getproduct.php",
+            method:"get",
+            data:{id:productid},
+            success:function(data){
+              console.log(data);
+            }
+          })
+        })
 
       })
       $(document).on('click','.btnremove',function(){  //when you say this is because we are working here on the button
