@@ -1,7 +1,6 @@
 <!-- this is the header -->
 <?php 
     include_once 'connectdb.php';
-    //session_start();
 
     $id = $_GET["id"];  //this id comes from the ajax request in createorder.php, data:{id:productid}, using get method
 
@@ -10,11 +9,11 @@
     $select->execute();
     $row=$select->fetch(PDO::FETCH_ASSOC);
 
-    $respose=$row;
+    $response=$row;
 
-    header('Content-Type: application/json');
+    header("Content-type: application/json");
 
-    echo json_encode($respose);
+    echo json_encode($response);
 
 
 ?>

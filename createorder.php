@@ -20,7 +20,7 @@
       $result=$select->fetchAll();
 
       foreach($result as $row){
-        $output.='<option value"'.$row["pid"].'">'.$row["pname"].'</option>';
+        $output.='<option data-purchaseprice="'.$row['purchaseprice'].'" data-saleprice="'.$row['saleprice'].'" data-stock="'.$row['pstock'].'" value"'.$row["pid"].'">'.$row["pname"].'</option>';
       }
       return $output; //return of the function
     }
@@ -195,6 +195,8 @@
   <!-- /.content-wrapper -->
 
   <script>
+
+    
     //Date picker
     $('#datepicker').datepicker({
       autoclose: true
@@ -208,32 +210,52 @@
 
     $(document).ready(function(){
       $(document).on('click','.btnadd',function(){ //btnadd comes from where the table started
-        var html='';
-        html+='<tr>';
-        html+='<td><input type="hidden" class="form-control pname" name="productname[]" readonly></td>';
-        html+='<td><select class="form-control productid" name="productid[]" style="width:300px";><option value="">Select Option</option><?php echo fill_product($pdo);?></select></td>';
-        html+='<td><input type="text" class="form-control stock" name="stock[]" readonly></td>';
-        html+='<td><input type="text" class="form-control price" name="price[]" readonly></td>';
-        html+='<td><input type="text" class="form-control qty" name="qty[]" ></td>';
-        html+='<td><input type="text" class="form-control total" name="total[]" readonly></td>';
-        html+='<td><center><button type="button" name="remove" class="btn btn-danger btn-sm btnremove"><span class="glyphicon glyphicon-remove"></span></button></center></td>';
+        // var html='';
+        // html+='<tr>';
+        // html+='<td><input type="hidden" class="form-control pname" name="productname[]" readonly></td>';
+        // html+='<td><select class="form-control productid" name="productid[]" style="width:300px";><option value="">Select Option</option><?php echo fill_product($pdo);?></select></td>';
+        // html+='<td><input type="text" class="form-control stock" name="stock[]" readonly></td>';
+        // html+='<td><input type="text" class="form-control price" name="price[]" readonly></td>';
+        // html+='<td><input type="text" class="form-control qty" name="qty[]" ></td>';
+        // html+='<td><input type="text" class="form-control total" name="total[]" readonly></td>';
+        // html+='<td><center><button type="button" name="remove" class="btn btn-danger btn-sm btnremove"><span class="glyphicon glyphicon-remove"></span></button></center></td>';
+        
+        var html=`
+        <tr>
+        <td><input type="hidden" class="form-control pname" name="productname[]" readonly></td>
+        <td><select class="form-control productid" name="productid[]" style="width:300px";><option value="">Select Option</option><?php echo fill_product($pdo);?></select></td>
+        <td><input type="text" class="form-control stock" name="stock[]" readonly></td>
+        <td><input type="text" class="form-control price" name="price[]" readonly></td>
+        <td><input type="text" class="form-control qty" name="qty[]" ></td>
+        <td><input type="text" class="form-control total" name="total[]" readonly></td>
+        <td><center><button type="button" name="remove" class="btn btn-danger btn-sm btnremove"><span class="glyphicon glyphicon-remove"></span></button></center></td>`;
+
         $('#producttable').append(html);
 
         //Initialize Select2 Elements
         $('.productid').select2()
-
-        $(".productid").on('change',function(e){  //this productid comes from the function above, passing the id and the name,  $output.='<option value"'.$row["pid"].'">'.$row["pname"].'</option>';
-          var productid = this.value;
-          $.ajax({
-            url:"getproduct.php",
-            method:"get",
-            data:{id:productid},
-            success:function(data){
-              console.log(data);
-            }
-          })
-        })
-
+// You don't need use ajax here
+// Let me work then you can see
+      });
+      $(document).on('change','.productid',function(e){  //this productid comes from the function above, passing the id and the name,  $output.='<option value"'.$row["pid"].'">'.$row["pname"].'</option>';
+        var selectPro = $(e.currentTarget); // jQuery get current selection
+        var stock = selectPro.find('option:selected').attr('data-stock');
+        var price = selectPro.find('option:selected').attr('data-purchaseprice');
+        var tr = selectPro.parent().parent();
+        tr.find(".stock").val(stock);
+        tr.find(".price").val(price);
+      
+        // var productid=this.value;
+        // var tr=$(this).parent().parent();
+        // $.ajax({
+        //   url:"getproduct.php",
+        //   method:"GET",
+        //   data:{id:productid},
+        //   success:function(data){
+        //     console.log(data);
+        //     tr.find(".stock").val(data["pstock"]);// .stock comes from html+= class="form-control stock" and pstock is the column in the database
+        //   }
+        //   })
       })
       $(document).on('click','.btnremove',function(){  //when you say this is because we are working here on the button
         $(this).closest('tr').remove();
