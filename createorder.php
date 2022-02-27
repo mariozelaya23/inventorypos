@@ -114,7 +114,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-usd"></i>
                     </div>
-                    <input type="text" class="form-control" name="txtsubtotal" required>
+                    <input type="text" class="form-control" name="txtsubtotal" id="txtsubtotal" required>
                   </div>
               </div>
               <div class="form-group">
@@ -246,6 +246,7 @@
         tr.find(".price").val(price);
         tr.find(".qty").val(1);
         tr.find(".total").val(tr.find(".qty").val() * tr.find(".price").val());
+        calculate();
       
         // var productid=this.value;
         // var tr=$(this).parent().parent();
@@ -264,7 +265,7 @@
         $(this).closest('tr').remove();
       })
 
-      $("#producttable").delegate(".qty","keyup change" ,function(){
+      $("#producttable").delegate(".qty","keyup change" ,function(){ // this function calculate the qty column
         var quantity = $(this);
         var tr=$(this).parent().parent();
         if((quantity.val()-0)>(tr.find(".stock").val()-0)){  // this value (quantity.val()-0) is when a user type a value, the other one is the quantity in the db
@@ -275,6 +276,22 @@
           tr.find(".total").val(quantity.val() * tr.find(".price").val());
         }
       })
+
+      function calculate(){
+        var subtotal = 0;
+        var tax = 0;
+        var discount = 0;
+        var net_total = 0;
+        var paid_amt = 0;
+        var due = 0;
+
+        $(".total").each(function(){  // . = class
+          subtotal = subtotal+($(this).val()*1);  //$(this) = $(".total")
+
+        })
+
+        $("#txtsubtotal").val(subtotal.toFixed(2));  // # = ID | toFixed(2) = 2 decimal
+      }
 
     });
 
