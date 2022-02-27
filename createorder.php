@@ -226,7 +226,7 @@
         <td><select class="form-control productid" name="productid[]" style="width:300px";><option value="">Select Option</option><?php echo fill_product($pdo);?></select></td>
         <td><input type="text" class="form-control stock" name="stock[]" readonly></td>
         <td><input type="text" class="form-control price" name="price[]" readonly></td>
-        <td><input type="text" class="form-control qty" name="qty[]" ></td>
+        <td><input type="number" min="1" class="form-control qty" name="qty[]" ></td>
         <td><input type="text" class="form-control total" name="total[]" readonly></td>
         <td><center><button type="button" name="remove" class="btn btn-danger btn-sm btnremove"><span class="glyphicon glyphicon-remove"></span></button></center></td>`;
 
@@ -259,9 +259,23 @@
         //   }
         //   })
       })
+
       $(document).on('click','.btnremove',function(){  //when you say this is because we are working here on the button
         $(this).closest('tr').remove();
       })
+
+      $("#producttable").delegate(".qty","keyup change" ,function(){
+        var quantity = $(this);
+        var tr=$(this).parent().parent();
+        if((quantity.val()-0)>(tr.find(".stock").val()-0)){  // this value (quantity.val()-0) is when a user type a value, the other one is the quantity in the db
+          swal("WARNING","This much of quantity is not available","warning");
+          quantity.val(1);
+          tr.find(".total").val(quantity.val() * tr.find(".price").val());
+        }else{
+          tr.find(".total").val(quantity.val() * tr.find(".price").val());
+        }
+      })
+
     });
 
   </script>
