@@ -244,6 +244,8 @@
         var tr = selectPro.parent().parent();
         tr.find(".stock").val(stock);
         tr.find(".price").val(price);
+        tr.find(".qty").val(1);
+        tr.find(".total").val(tr.find(".qty").val() * tr.find(".price").val());
       
         // var productid=this.value;
         // var tr=$(this).parent().parent();
