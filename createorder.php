@@ -263,6 +263,8 @@
 
       $(document).on('click','.btnremove',function(){  //when you say this is because we are working here on the button
         $(this).closest('tr').remove();
+        calculate(0,0);
+        $("#txtpaid").val(0);
       })
 
       $("#producttable").delegate(".qty","keyup change" ,function(){ // this function calculate the qty column
@@ -272,8 +274,10 @@
           swal("WARNING","This much of quantity is not available","warning");
           quantity.val(1);
           tr.find(".total").val(quantity.val() * tr.find(".price").val());
+          calculate(0,0);
         }else{
           tr.find(".total").val(quantity.val() * tr.find(".price").val());
+          calculate(0,0);
         }
       })
 
@@ -305,6 +309,12 @@
       $("#txtdiscount").keyup(function(){
         var discount = $(this).val();
         calculate(discount,0);
+      });
+
+      $("#txtpaid").keyup(function(){
+        var paid = $(this).val();
+        var discount = $("#txtdiscount").val();
+        calculate(discount,paid);
       });
 
 
