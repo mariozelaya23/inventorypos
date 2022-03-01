@@ -246,7 +246,7 @@
         tr.find(".price").val(price);
         tr.find(".qty").val(1);
         tr.find(".total").val(tr.find(".qty").val() * tr.find(".price").val());
-        calculate();
+        calculate(0,0);
       
         // var productid=this.value;
         // var tr=$(this).parent().parent();
@@ -277,12 +277,12 @@
         }
       })
 
-      function calculate(){
+      function calculate(dis,paid){  //dis is when the user pass the discount amount on the text field
         var subtotal = 0;
         var tax = 0;
-        var discount = 0;
+        var discount = dis;
         var net_total = 0;
-        var paid_amt = 0;
+        var paid_amt = paid;
         var due = 0;
 
         $(".total").each(function(){  // . = class
@@ -301,7 +301,12 @@
         $("#txtdiscount").val(discount);
         $("#txtdue").val(due.toFixed(2));
 
-      }
+      } //function calculate ends here
+      $("#txtdiscount").keyup(function(){
+        var discount = $(this).val();
+        calculate(discount,0);
+      });
+
 
     });
 
