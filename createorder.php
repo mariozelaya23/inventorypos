@@ -24,6 +24,35 @@
       }
       return $output; //return of the function
     }
+
+    if(isset($_POST['btnsaveorder'])){
+      $customer_name = $_POST['txtcustomer'];
+      $order_date = date('Y-m-d',strtotime($_POST['orderdate']));
+      $subtotal = $_POST['txtsubtotal'];
+      $tax = $_POST['txttax'];
+      $discount = $_POST['txtdiscount'];
+      $total = $_POST['txttotal'];
+      $paid = $_POST['txtpaid'];
+      $due = $_POST['txtdue'];
+      $payment_type = $_POST['rd'];
+
+      $insert = $pdo->prepare("INSERT INTO tbl_invoice(customer_name,order_date,subtotal,tax,discount,total,paid,due,payment_type)
+      VALUES(:customer_name,:order_date,:subtotal,:tax,:discount,:total,:paid,:due,:payment_type)");
+
+      $insert->bindParam(':customer_name',$customer_name);
+      $insert->bindParam(':order_date',$order_date);
+      $insert->bindParam(':subtotal',$subtotal);
+      $insert->bindParam(':tax',$tax);
+      $insert->bindParam(':discount',$discount);
+      $insert->bindParam(':total',$total);
+      $insert->bindParam(':paid',$paid);
+      $insert->bindParam(':due',$due);
+      $insert->bindParam(':payment_type',$payment_type);
+
+      $insert->execute();
+      
+    }
+
 ?>
 
   <!-- Content Wrapper. Contains page content -->
