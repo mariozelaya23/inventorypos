@@ -26,6 +26,7 @@
     }
 
     if(isset($_POST['btnsaveorder'])){
+      //invoice table
       $customer_name = $_POST['txtcustomer'];
       $order_date = date('Y-m-d',strtotime($_POST['orderdate']));
       $subtotal = $_POST['txtsubtotal'];
@@ -34,8 +35,17 @@
       $total = $_POST['txttotal'];
       $paid = $_POST['txtpaid'];
       $due = $_POST['txtdue'];
-      $payment_type = $_POST['rd'];
+      $payment_type = $_POST['rb'];
+      
+      //this variables are for invoice details db table (this variables comes from the JQuery table)
+      $arr_productid = $_POST['productid']; //this name comes from the JQuery table name="productid[]"
+      $arr_productname = $_POST['productname'];
+      $arr_stock = $_POST['stock'];
+      $arr_qty = $_POST['qty'];
+      $arr_price = $_POST['price'];
+      $arr_total = $_POST['total'];
 
+      //invoice table
       $insert = $pdo->prepare("INSERT INTO tbl_invoice(customer_name,order_date,subtotal,tax,discount,total,paid,due,payment_type)
       VALUES(:customer_name,:order_date,:subtotal,:tax,:discount,:total,:paid,:due,:payment_type)");
 
@@ -50,7 +60,28 @@
       $insert->bindParam(':payment_type',$payment_type);
 
       $insert->execute();
+
+      //inserting data in invoice details table
+      $invoice_id = $pdo->lastInsertId();
       
+      if($invoice_id!=null){
+        for($i=0; $i<count($arr_productid); $i++){
+          $insert = $pdo->prepare("INSERT INTO tbl_invoice_details(invoice_id,product_id,product_name,qty,price,order_date)
+          VALUES(:invoice_id,:product_id,:product_name,:qty,:price,:order_date)");
+
+          $insert->bindParam(':invoice_id',$invoice_id);
+          $insert->bindParam(':product_id',$arr_productid[$i]);
+          $insert->bindParam(':product_name',$arr_productname[$i]);
+          $insert->bindParam(':qty',$arr_qty[$i]);
+          $insert->bindParam(':price',$arr_price[$i]);
+          $insert->bindParam(':order_date',$order_date);
+
+          $insert->execute();
+        }
+        echo "success fully created order";
+      }
+
+
     }
 
 ?>
@@ -268,9 +299,11 @@
       });
       $(document).on('change','.productid',function(e){  //this productid comes from the function above, passing the id and the name,  $output.='<option value"'.$row["pid"].'">'.$row["pname"].'</option>';
         var selectPro = $(e.currentTarget); // jQuery get current selection
+        var pname = selectPro.find('option:selected').attr('data-stock');
         var stock = selectPro.find('option:selected').attr('data-stock');
         var price = selectPro.find('option:selected').attr('data-purchaseprice');
         var tr = selectPro.parent().parent();
+        tr.find(".pname").val(pname);
         tr.find(".stock").val(stock);
         tr.find(".price").val(price);
         tr.find(".qty").val(1);
