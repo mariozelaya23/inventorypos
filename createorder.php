@@ -20,7 +20,7 @@
       $result=$select->fetchAll();
 
       foreach($result as $row){
-        $output.='<option data-purchaseprice="'.$row['purchaseprice'].'" data-saleprice="'.$row['saleprice'].'" data-stock="'.$row['pstock'].'" value"'.$row["pid"].'">'.$row["pname"].'</option>';
+        $output.='<option data-purchaseprice="'.$row['purchaseprice'].'" data-saleprice="'.$row['saleprice'].'" data-stock="'.$row['pstock'].'" data-pname="'.$row['pname'].'" value="'.$row["pid"].'">'.$row["pname"].'</option>';
       }
       return $output; //return of the function
     }
@@ -293,13 +293,13 @@
         $('#producttable').append(html);
 
         //Initialize Select2 Elements
-        $('.productid').select2()
+        $('.productid').select2();
 // You don't need use ajax here
 // Let me work then you can see
       });
       $(document).on('change','.productid',function(e){  //this productid comes from the function above, passing the id and the name,  $output.='<option value"'.$row["pid"].'">'.$row["pname"].'</option>';
         var selectPro = $(e.currentTarget); // jQuery get current selection
-        var pname = selectPro.find('option:selected').attr('data-stock');
+        var pname = selectPro.find('option:selected').attr('data-pname');
         var stock = selectPro.find('option:selected').attr('data-stock');
         var price = selectPro.find('option:selected').attr('data-purchaseprice');
         var tr = selectPro.parent().parent();
