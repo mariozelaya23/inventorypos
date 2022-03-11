@@ -37,12 +37,12 @@
       
       <div class="box box-warning">
         <div class="box-header with-border">
-          <h3 class="box-title"></h3>
+          <h3 class="box-title">Order Table</h3>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
             <div style="overflow-x:auto">
-                <table id="producttable" class="table table-striped">
+                <table id="ordertable" class="table table-striped">
                     <thead> <!-- table heading -->  
                         <tr>
                         <th>Inovice ID</th>
@@ -73,7 +73,7 @@
                             <td>'.$row->due.'</td>
                             <td>'.$row->payment_type.'</td>
                             <td>
-                                <a href="viewproduct.php?id='.$row->invoice_id.'" class="btn btn-success" role="button" name="btndelete"><span class="glyphicon glyphicon-eye-open" style="color=#ffffff" data-toggle="tooltip" title="Print Invoice"></span></a>
+                                <a href="viewproduct.php?id='.$row->invoice_id.'" class="btn btn-warning" role="button" name="btndelete"><span class="glyphicon glyphicon-print" style="color=#ffffff" data-toggle="tooltip" title="Print Invoice"></span></a>
                             </td>
                             <td>
                                 <a href="editproduct.php?id='.$row->invoice_id.'" class="btn btn-info" role="button" name="btndelete"><span class="glyphicon glyphicon-edit" style="color=#ffffff" data-toggle="tooltip" title="Edit Order"></span></a>
@@ -97,6 +97,22 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <?php 
+<!-- Call this single function -->
+<script>
+  $(document).ready( function () {
+  $('#ordertable').DataTable({
+    "order":[[0,"desc"]]
+  });
+  } );
+</script>
+
+<script>
+  $(document).ready( function () {
+    $('[data-toggle="tooltip"]').tooltip();
+  } );
+</script>
+
+
+<?php 
     include_once 'footer.php';
-  ?>
+?>
