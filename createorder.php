@@ -66,6 +66,17 @@
       
       if($invoice_id!=null){
         for($i=0; $i<count($arr_productid); $i++){
+
+          //rem means remaining qty of the stock
+          $rem_qty = $arr_stock[$i] - $arr_qty[$i];
+
+          if($rem_qty < 0){
+            return "Order is not complete";
+          }else{
+            $update = $pdo->prepare("UPDATE tbl_product SET pstock = '$rem_qty' WHERE pid='".$arr_productid[$i]."'");
+            $update->execute();
+          }
+
           $insert = $pdo->prepare("INSERT INTO tbl_invoice_details(invoice_id,product_id,product_name,qty,price,order_date)
           VALUES(:invoice_id,:product_id,:product_name,:qty,:price,:order_date)");
 
@@ -78,7 +89,8 @@
 
           $insert->execute();
         }
-        echo "success fully created order";
+        //echo "success fully created order";
+        header('location:orderlist.php');
       }
 
 
