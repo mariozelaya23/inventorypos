@@ -13,14 +13,18 @@
       include_once'headeruser.php';
     }
 
-    function fill_product($pdo){ //function passing the connection object $pdo
+    function fill_product($pdo,$pid){ //function passing the connection object $pdo
       $output='';
       $select=$pdo->prepare("SELECT * FROM tbl_product ORDER BY pname");
       $select->execute();
       $result=$select->fetchAll();
 
       foreach($result as $row){
-        $output.='<option data-purchaseprice="'.$row['purchaseprice'].'" data-saleprice="'.$row['saleprice'].'" data-stock="'.$row['pstock'].'" data-pname="'.$row['pname'].'" value="'.$row["pid"].'">'.$row["pname"].'</option>';
+        $output.='<option data-purchaseprice="'.$row['purchaseprice'].'" data-saleprice="'.$row['saleprice'].'" data-stock="'.$row['pstock'].'" data-pname="'.$row['pname'].'" value="'.$row["pid"].'"';
+          if($pid == $row['pid']){  //this part of code show the product name on the select option
+            $output.='selected';
+          }
+          $output.='>'.$row["pname"].'</option>';
       }
       return $output; //return of the function
     }
@@ -41,6 +45,12 @@
     $paid = $row['paid'];
     $due = $row['due'];
     $payment_type = $row['payment_type'];
+
+    //fetch invoice details data from the database
+    $id = $_GET['id']; //you can see this id when you clic on the editorder button from orderlist.php
+    $select = $pdo->prepare("SELECT * FROM tbl_invoice_details WHERE invoice_id=$id");
+    $select->execute();
+    $row_invoice_details = $select->fetchAll(PDO::FETCH_ASSOC);
 
 
     if(isset($_POST['btnupdateorder'])){
@@ -190,6 +200,29 @@
                       </th>
                     </tr>
                   </thead>
+                  <?php 
+                    foreach($row_invoice_details as $item_invoice_details){
+
+                      //fetch invoice details data from the database
+                      $id = $_GET['id']; //you can see this id when you clic on the editorder button from orderlist.php
+                      $select = $pdo->prepare("SELECT * FROM tbl_product WHERE pid='{$item_invoice_details['product_id']}'");
+                      $select->execute();
+                      $row_product = $select->fetch(PDO::FETCH_ASSOC);
+
+                  ?>
+                    <!-- invoice details product table -->
+                    <tr>
+                      <?php 
+                        echo'<td><input type="hidden" class="form-control pname" name="productname[]" readonly></td>';
+                        echo'<td><select class="form-control productidedit" name="productid[]" style="width:300px";><option value="">Select Option</option>'.fill_product($pdo,$item_invoice_details['product_id']).'</select></td>';
+                        echo'<td><input type="text" class="form-control stock" name="stock[]" value="'.$row_product['pstock'].'" readonly></td>';
+                        echo'<td><input type="text" class="form-control price" name="price[]" value="'.$row_product['saleprice'].'" readonly></td>';
+                        echo'<td><input type="number" min="1" class="form-control qty" name="qty[]" value="'.$item_invoice_details['qty'].'" ></td>';
+                        echo'<td><input type="text" class="form-control total" name="total[]" value="'.$row_product['saleprice']*$item_invoice_details['qty'].'" readonly></td>';
+                        echo'<td><center><button type="button" name="remove" class="btn btn-danger btn-sm btnremove"><span class="glyphicon glyphicon-remove"></span></button></center></td>';
+                      ?>
+                    </tr>
+                    <?php }?>
                 </table>
               </div>
             </div>
@@ -258,13 +291,13 @@
               <label>Payment Method</label>
               <div class="form-group">
                 <label>
-                  <input type="radio" name="rb" class="minimal-red" value="Cash" checked> Cash
+                  <input type="radio" name="rb" class="minimal-red" value="Cash"<?php echo ($payment_type == 'Cash')?'checked':''?>> Cash
                 </label>
                 <label>
-                  <input type="radio" name="rb" class="minimal-red" value="Card"> Card
+                  <input type="radio" name="rb" class="minimal-red" value="Card"<?php echo ($payment_type == 'Card')?'checked':''?>> Card
                 </label>
                 <label>
-                  <input type="radio" name="rb" class="minimal-red" value="Check"> Check
+                  <input type="radio" name="rb" class="minimal-red" value="Check"<?php echo ($payment_type == 'Check')?'checked':''?>> Check
                 </label>
               </div>
             </div>
@@ -313,7 +346,7 @@
         var html=`
         <tr>
         <td><input type="hidden" class="form-control pname" name="productname[]" readonly></td>
-        <td><select class="form-control productid" name="productid[]" style="width:300px";><option value="">Select Option</option><?php echo fill_product($pdo);?></select></td>
+        <td><select class="form-control productid" name="productid[]" style="width:300px";><option value="">Select Option</option><?php echo fill_product($pdo,'');?></select></td>
         <td><input type="text" class="form-control stock" name="stock[]" readonly></td>
         <td><input type="text" class="form-control price" name="price[]" readonly></td>
         <td><input type="number" min="1" class="form-control qty" name="qty[]" ></td>
@@ -324,10 +357,38 @@
 
         //Initialize Select2 Elements
         $('.productid').select2();
-// You don't need use ajax here
-// Let me work then you can see
+
+        $('.productidedit').select2();
+      // You don't need use ajax here
+      // Let me work then you can see
       });
       $(document).on('change','.productid',function(e){  //this productid comes from the function above, passing the id and the name,  $output.='<option value"'.$row["pid"].'">'.$row["pname"].'</option>';
+        var selectPro = $(e.currentTarget); // jQuery get current selection
+        var pname = selectPro.find('option:selected').attr('data-pname');
+        var stock = selectPro.find('option:selected').attr('data-stock');
+        var price = selectPro.find('option:selected').attr('data-purchaseprice');
+        var tr = selectPro.parent().parent();
+        tr.find(".pname").val(pname);
+        tr.find(".stock").val(stock);
+        tr.find(".price").val(price);
+        tr.find(".qty").val(1);
+        tr.find(".total").val(tr.find(".qty").val() * tr.find(".price").val());
+        calculate(0,0);
+      
+        // var productid=this.value;
+        // var tr=$(this).parent().parent();
+        // $.ajax({
+        //   url:"getproduct.php",
+        //   method:"GET",
+        //   data:{id:productid},
+        //   success:function(data){
+        //     console.log(data);
+        //     tr.find(".stock").val(data["pstock"]);// .stock comes from html+= class="form-control stock" and pstock is the column in the database
+        //   }
+        //   })
+      })
+
+      $(document).on('change','.productidedit',function(e){  //this productid comes from the function above, passing the id and the name,  $output.='<option value"'.$row["pid"].'">'.$row["pname"].'</option>';
         var selectPro = $(e.currentTarget); // jQuery get current selection
         var pname = selectPro.find('option:selected').attr('data-pname');
         var stock = selectPro.find('option:selected').attr('data-stock');
