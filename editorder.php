@@ -332,37 +332,8 @@
     })
 
     $(document).ready(function(){
-      $(document).on('click','.btnadd',function(){ //btnadd comes from where the table started
-        // var html='';
-        // html+='<tr>';
-        // html+='<td><input type="hidden" class="form-control pname" name="productname[]" readonly></td>';
-        // html+='<td><select class="form-control productid" name="productid[]" style="width:300px";><option value="">Select Option</option><?php echo fill_product($pdo);?></select></td>';
-        // html+='<td><input type="text" class="form-control stock" name="stock[]" readonly></td>';
-        // html+='<td><input type="text" class="form-control price" name="price[]" readonly></td>';
-        // html+='<td><input type="text" class="form-control qty" name="qty[]" ></td>';
-        // html+='<td><input type="text" class="form-control total" name="total[]" readonly></td>';
-        // html+='<td><center><button type="button" name="remove" class="btn btn-danger btn-sm btnremove"><span class="glyphicon glyphicon-remove"></span></button></center></td>';
-        
-        var html=`
-        <tr>
-        <td><input type="hidden" class="form-control pname" name="productname[]" readonly></td>
-        <td><select class="form-control productid" name="productid[]" style="width:300px";><option value="">Select Option</option><?php echo fill_product($pdo,'');?></select></td>
-        <td><input type="text" class="form-control stock" name="stock[]" readonly></td>
-        <td><input type="text" class="form-control price" name="price[]" readonly></td>
-        <td><input type="number" min="1" class="form-control qty" name="qty[]" ></td>
-        <td><input type="text" class="form-control total" name="total[]" readonly></td>
-        <td><center><button type="button" name="remove" class="btn btn-danger btn-sm btnremove"><span class="glyphicon glyphicon-remove"></span></button></center></td>`;
-
-        $('#producttable').append(html);
-
-        //Initialize Select2 Elements
-        $('.productid').select2();
-
-        $('.productidedit').select2();
-      // You don't need use ajax here
-      // Let me work then you can see
-      });
-      $(document).on('change','.productid',function(e){  //this productid comes from the function above, passing the id and the name,  $output.='<option value"'.$row["pid"].'">'.$row["pname"].'</option>';
+      $('.productidedit').select2();
+      $(document).on('change','.productidedit',function(e){  //this productid comes from the function above, passing the id and the name,  $output.='<option value"'.$row["pid"].'">'.$row["pname"].'</option>';
         var selectPro = $(e.currentTarget); // jQuery get current selection
         var pname = selectPro.find('option:selected').attr('data-pname');
         var stock = selectPro.find('option:selected').attr('data-stock');
@@ -388,7 +359,25 @@
         //   })
       })
 
-      $(document).on('change','.productidedit',function(e){  //this productid comes from the function above, passing the id and the name,  $output.='<option value"'.$row["pid"].'">'.$row["pname"].'</option>';
+      $(document).on('click','.btnadd',function(){ //btnadd comes from where the table started
+        
+        var html=`
+        <tr>
+        <td><input type="hidden" class="form-control pname" name="productname[]" readonly></td>
+        <td><select class="form-control productid" name="productid[]" style="width:300px";><option value="">Select Option</option><?php echo fill_product($pdo,'');?></select></td>
+        <td><input type="text" class="form-control stock" name="stock[]" readonly></td>
+        <td><input type="text" class="form-control price" name="price[]" readonly></td>
+        <td><input type="number" min="1" class="form-control qty" name="qty[]" ></td>
+        <td><input type="text" class="form-control total" name="total[]" readonly></td>
+        <td><center><button type="button" name="remove" class="btn btn-danger btn-sm btnremove"><span class="glyphicon glyphicon-remove"></span></button></center></td>`;
+
+        $('#producttable').append(html);
+
+        //Initialize Select2 Elements
+        $('.productid').select2();
+
+      });
+      $(document).on('change','.productid',function(e){  //this productid comes from the function above, passing the id and the name,  $output.='<option value"'.$row["pid"].'">'.$row["pname"].'</option>';
         var selectPro = $(e.currentTarget); // jQuery get current selection
         var pname = selectPro.find('option:selected').attr('data-pname');
         var stock = selectPro.find('option:selected').attr('data-stock');
