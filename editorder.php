@@ -54,16 +54,19 @@
 
 
     if(isset($_POST['btnupdateorder'])){
-      //invoice table
-      $customer_name = $_POST['txtcustomer'];
-      $order_date = date('Y-m-d',strtotime($_POST['orderdate']));
-      $subtotal = $_POST['txtsubtotal'];
-      $tax = $_POST['txttax'];
-      $discount = $_POST['txtdiscount'];
-      $total = $_POST['txttotal'];
-      $paid = $_POST['txtpaid'];
-      $due = $_POST['txtdue'];
-      $payment_type = $_POST['rb'];
+
+      // Steps for updatateorder button
+
+      // 1) Get values from text fields amd from array in variables
+      $txt_customer_name = $_POST['txtcustomer'];
+      $txt_order_date = date('Y-m-d',strtotime($_POST['orderdate']));
+      $txt_subtotal = $_POST['txtsubtotal'];
+      $txt_tax = $_POST['txttax'];
+      $txt_discount = $_POST['txtdiscount'];
+      $txt_total = $_POST['txttotal'];
+      $txt_paid = $_POST['txtpaid'];
+      $txt_due = $_POST['txtdue'];
+      $txt_payment_type = $_POST['rb'];
       
       //this variables are for invoice details db table (this variables comes from the JQuery table)
       $arr_productid = $_POST['productid']; //this name comes from the JQuery table name="productid[]"
@@ -73,53 +76,29 @@
       $arr_price = $_POST['price'];
       $arr_total = $_POST['total'];
 
-      //invoice table
-      $insert = $pdo->prepare("INSERT INTO tbl_invoice(customer_name,order_date,subtotal,tax,discount,total,paid,due,payment_type)
-      VALUES(:customer_name,:order_date,:subtotal,:tax,:discount,:total,:paid,:due,:payment_type)");
-
-      $insert->bindParam(':customer_name',$customer_name);
-      $insert->bindParam(':order_date',$order_date);
-      $insert->bindParam(':subtotal',$subtotal);
-      $insert->bindParam(':tax',$tax);
-      $insert->bindParam(':discount',$discount);
-      $insert->bindParam(':total',$total);
-      $insert->bindParam(':paid',$paid);
-      $insert->bindParam(':due',$due);
-      $insert->bindParam(':payment_type',$payment_type);
-
-      $insert->execute();
-
-      //inserting data in invoice details table
-      $invoice_id = $pdo->lastInsertId();
-      
-      if($invoice_id!=null){
-        for($i=0; $i<count($arr_productid); $i++){
-
-          //rem means remaining qty of the stock
-          $rem_qty = $arr_stock[$i] - $arr_qty[$i];
-
-          if($rem_qty < 0){
-            return "Order is not complete";
-          }else{
-            $update = $pdo->prepare("UPDATE tbl_product SET pstock = '$rem_qty' WHERE pid='".$arr_productid[$i]."'");
-            $update->execute();
-          }
-
-          $insert = $pdo->prepare("INSERT INTO tbl_invoice_details(invoice_id,product_id,product_name,qty,price,order_date)
-          VALUES(:invoice_id,:product_id,:product_name,:qty,:price,:order_date)");
-
-          $insert->bindParam(':invoice_id',$invoice_id);
-          $insert->bindParam(':product_id',$arr_productid[$i]);
-          $insert->bindParam(':product_name',$arr_productname[$i]);
-          $insert->bindParam(':qty',$arr_qty[$i]);
-          $insert->bindParam(':price',$arr_price[$i]);
-          $insert->bindParam(':order_date',$order_date);
-
-          $insert->execute();
-        }
-        //echo "success fully created order";
-        header('location:orderlist.php');
+      // 2) Write update query for tbl_product stock.
+      foreach($row_invoice_details as $item_invoice_details){
+        $updateproduct = $pdo->prepare("update tbl_product SET pstock=pstock+".$item_invoice_details['qty']."WHERE pid='".$item_invoice_details['product_id']."'");
+        $updateproduct->execute();
       }
+
+      // 3) Write delete query for tbl_invoice_details table data where invoice_id = $id.
+      $delete_invoice_details = $pdo->prepare("DELETE FROM tbl_invoice_details WHERE invoice_id = $id");
+      $delete_invoice_details->execute();
+
+      // 4) Write update query for tbl_invoice table data.
+      
+
+      // 5) Write select query for tbl_ product table to get out stock values.
+
+      // 6) Write update query for tbl_product table to update stock values.
+
+      // 7) Write insert query for tbl_invoice_details for insert new records.
+
+
+
+
+      
 
 
     }
