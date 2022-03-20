@@ -7,12 +7,6 @@
       header('location:index.php');
     }
   
-    if($_SESSION['role']=="Admin"){
-      include_once'header.php';
-    }else{
-      include_once'headeruser.php';
-    }
-
     function fill_product($pdo,$pid){ //function passing the connection object $pdo
       $output='';
       $select=$pdo->prepare("SELECT * FROM tbl_product ORDER BY pname");
@@ -78,7 +72,7 @@
 
       // 2) Write update query for tbl_product stock.
       foreach($row_invoice_details as $item_invoice_details){
-        $updateproduct = $pdo->prepare("update tbl_product SET pstock=pstock+".$item_invoice_details['qty']."WHERE pid='".$item_invoice_details['product_id']."'");
+        $updateproduct = $pdo->prepare("UPDATE tbl_product SET pstock=pstock+".$item_invoice_details['qty']." WHERE pid='".$item_invoice_details['product_id']."'");
         $updateproduct->execute();
       }
 
@@ -87,20 +81,72 @@
       $delete_invoice_details->execute();
 
       // 4) Write update query for tbl_invoice table data.
+      $update_invoice = $pdo->prepare("UPDATE tbl_invoice SET customer_name=:cust_name,order_date=:orderdate,subtotal=:stotal,
+      tax=:tax,discount=:disc,total=:total,paid=:paid,due=:due,payment_type=:p_type WHERE invoice_id=$id");
+
+      $update_invoice->bindParam(':cust_name',$txt_customer_name);
+      $update_invoice->bindParam(':orderdate',$txt_order_date);
+      $update_invoice->bindParam(':stotal',$txt_subtotal);
+      $update_invoice->bindParam(':tax',$txt_tax);
+      $update_invoice->bindParam(':disc',$txt_discount);
+      $update_invoice->bindParam(':total',$txt_total);
+      $update_invoice->bindParam(':paid',$txt_paid);
+      $update_invoice->bindParam(':due',$txt_due);
+      $update_invoice->bindParam(':p_type',$txt_payment_type);
+
+      $update_invoice->execute();
+
+      //inserting data in invoice details table
+      $invoice_id = $pdo->lastInsertId();
       
+      if($invoice_id!=null){
+        for($i=0; $i<count($arr_productid); $i++){
 
-      // 5) Write select query for tbl_ product table to get out stock values.
+          // 5) Write select query for tbl_ product table to get out stock values.
+          $selectpdt = $pdo->prepare("SELECT * FROM tbl_product WHERE pid='".$arr_productid[$i]."'");
+          $selectpdt->execute();
+          
+          while($rowpdt = $selectpdt->fetch(PDO::FETCH_OBJ)){
 
-      // 6) Write update query for tbl_product table to update stock values.
+            $db_stock[$i] = $rowpdt->pstock;
 
-      // 7) Write insert query for tbl_invoice_details for insert new records.
+            //rem means remaining qty of the stock
+            $rem_qty = $db_stock[$i] - $arr_qty[$i];
 
+            if($rem_qty < 0){
+              return "Order is not complete";
+            }else{
 
+              // 6) Write update query for tbl_product table to update stock values.
+              $update = $pdo->prepare("UPDATE tbl_product SET pstock = '$rem_qty' WHERE pid='".$arr_productid[$i]."'");
+              $update->execute();
+            }
 
+          }
 
-      
+          // 7) Write insert query for tbl_invoice_details for insert new records.
 
+          $insert = $pdo->prepare("INSERT INTO tbl_invoice_details(invoice_id,product_id,product_name,qty,price,order_date)
+          VALUES(:invoice_id,:product_id,:product_name,:qty,:price,:order_date)");
 
+          $insert->bindParam(':invoice_id',$id);
+          $insert->bindParam(':product_id',$arr_productid[$i]);
+          $insert->bindParam(':product_name',$arr_productname[$i]);
+          $insert->bindParam(':qty',$arr_qty[$i]);
+          $insert->bindParam(':price',$arr_price[$i]);
+          $insert->bindParam(':order_date',$txt_order_date);
+
+          $insert->execute();
+        }
+        //echo "success fully created order";
+        header('location:orderlist.php');
+      }
+    }
+
+    if($_SESSION['role']=="Admin"){
+      include_once'header.php';
+    }else{
+      include_once'headeruser.php';
     }
 
 ?>
