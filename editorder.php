@@ -70,13 +70,13 @@
       $arr_price = $_POST['price'];
       $arr_total = $_POST['total'];
 
-      // 2) Write update query for tbl_product stock.
+      // 2) Write update query for tbl_product stock.   Here we are setting the stock, we are adding the qty from invoice_detail to pstock 
       foreach($row_invoice_details as $item_invoice_details){
         $updateproduct = $pdo->prepare("UPDATE tbl_product SET pstock=pstock+".$item_invoice_details['qty']." WHERE pid='".$item_invoice_details['product_id']."'");
         $updateproduct->execute();
       }
 
-      // 3) Write delete query for tbl_invoice_details table data where invoice_id = $id.
+      // 3) Write delete query for tbl_invoice_details table data where invoice_id = $id.  // this is the table that is in the middle
       $delete_invoice_details = $pdo->prepare("DELETE FROM tbl_invoice_details WHERE invoice_id = $id");
       $delete_invoice_details->execute();
 
@@ -139,7 +139,7 @@
           $insert->execute();
         }
         //echo "success fully created order";
-        header('location:orderlist.php');
+        header('location:orderlist.php');  //is not redirecting
       }
     }
 
@@ -238,7 +238,7 @@
                     <!-- invoice details product table -->
                     <tr>
                       <?php 
-                        echo'<td><input type="hidden" class="form-control pname" name="productname[]" readonly></td>';
+                        echo'<td><input type="hidden" class="form-control pname" name="productname[]" value="'.$row_product['pname'].'" readonly></td>';
                         echo'<td><select class="form-control productidedit" name="productid[]" style="width:300px";><option value="">Select Option</option>'.fill_product($pdo,$item_invoice_details['product_id']).'</select></td>';
                         echo'<td><input type="text" class="form-control stock" name="stock[]" value="'.$row_product['pstock'].'" readonly></td>';
                         echo'<td><input type="text" class="form-control price" name="price[]" value="'.$row_product['saleprice'].'" readonly></td>';
@@ -370,6 +370,7 @@
         tr.find(".qty").val(1);
         tr.find(".total").val(tr.find(".qty").val() * tr.find(".price").val());
         calculate(0,0);
+        $("#txtpaid").val("");
       
         // var productid=this.value;
         // var tr=$(this).parent().parent();
@@ -414,6 +415,7 @@
         tr.find(".qty").val(1);
         tr.find(".total").val(tr.find(".qty").val() * tr.find(".price").val());
         calculate(0,0);
+        $("#txtpaid").val("");
       
         // var productid=this.value;
         // var tr=$(this).parent().parent();
@@ -431,12 +433,14 @@
       $(document).on('click','.btnremove',function(){  //when you say this is because we are working here on the button
         $(this).closest('tr').remove();
         calculate(0,0);
-        $("#txtpaid").val(0);
+        //$("#txtpaid").val(0);
+        $("#txtpaid").val("");
       })
 
       $("#producttable").delegate(".qty","keyup change" ,function(){ // this function calculate the qty column
         var quantity = $(this);
         var tr=$(this).parent().parent();
+        $("#txtpaid").val("");
         if((quantity.val()-0)>(tr.find(".stock").val()-0)){  // this value (quantity.val()-0) is when a user type a value, the other one is the quantity in the db
           swal("WARNING","This much of quantity is not available","warning");
           quantity.val(1);
