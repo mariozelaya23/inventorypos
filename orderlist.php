@@ -73,13 +73,13 @@
                             <td>'.$row->due.'</td>
                             <td>'.$row->payment_type.'</td>
                             <td>
-                                <a href="viewproduct.php?id='.$row->invoice_id.'" class="btn btn-warning" role="button" name="btndelete"><span class="glyphicon glyphicon-print" style="color=#ffffff" data-toggle="tooltip" title="Print Invoice"></span></a>
+                                <a href="invoice.php?id='.$row->invoice_id.'" class="btn btn-warning" role="button"><span class="glyphicon glyphicon-print" style="color=#ffffff" data-toggle="tooltip" title="Print Invoice"></span></a>
                             </td>
                             <td>
-                                <a href="editorder.php?id='.$row->invoice_id.'" class="btn btn-info" role="button" name="btndelete"><span class="glyphicon glyphicon-edit" style="color=#ffffff" data-toggle="tooltip" title="Edit Order"></span></a>
+                                <a href="editorder.php?id='.$row->invoice_id.'" class="btn btn-info" role="button"><span class="glyphicon glyphicon-edit" style="color=#ffffff" data-toggle="tooltip" title="Edit Order"></span></a>
                             </td>
                             <td>
-                                <button id='.$row->invoice_id.' class="btn btn-danger btndelete" name="btndelete"><span class="glyphicon glyphicon-trash" style="color=#ffffff" data-toggle="tooltip" title="Delete Order"></span></button>
+                                <button id='.$row->invoice_id.' class="btn btn-danger btndelete"><span class="glyphicon glyphicon-trash" style="color=#ffffff" data-toggle="tooltip" title="Delete Order"></span></button>
                             </td>
                             </tr>
                             ';
@@ -103,13 +103,52 @@
   $('#ordertable').DataTable({
     "order":[[0,"desc"]]
   });
-  } );
+  });
 </script>
 
 <script>
   $(document).ready( function () {
     $('[data-toggle="tooltip"]').tooltip();
-  } );
+  });
+
+  $(document).ready(function(){
+    $('.btndelete').click(function(){
+      //alert('Test');
+
+      var tdh = $(this);
+      var id = $(this).attr("id");
+      //alert(id);
+      //sweet alert
+      swal({
+        title: "Do you want to delete the order?",
+        text: "Once order, you can not recover this order!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) { //ajax code
+          $.ajax({
+            url:'orderdelete.php',
+            type:'post',
+            data:{
+              pidd:id
+            },
+            success:function(data){
+              tdh.parents('tr').hide();
+            }
+          })
+          swal("Your order has been deleted!", {
+            icon: "success",
+          });
+        } else {
+          swal("Your order is safe!");
+        }
+      });
+
+    });
+  
+  });
 </script>
 
 
