@@ -100,9 +100,9 @@
 <!-- Call this single function -->
 <script>
   $(document).ready( function () {
-  $('#ordertable').DataTable({
-    "order":[[0,"desc"]]
-  });
+    $('#ordertable').DataTable({
+      "order":[[0,"desc"]]
+    });
   });
 </script>
 
