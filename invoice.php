@@ -48,6 +48,49 @@ $pdf->SetFont('Arial','',8);
 $pdf->Cell(80,5,'Email: info@servernethosting.com',0,1,'');
 $pdf->Cell(80,5,'Website: www.servernethosting.com',0,1,'');
 
+
+$pdf->Line(5,45,205,45);
+$pdf->Line(5,46,205,46);
+
+$pdf->Ln(10);  //line brake
+
+$pdf->SetFont('Arial','BI',12);
+$pdf->Cell(20,10,'Bill To: ',0,0,'');
+
+$pdf->SetFont('Courier','BI',14);
+$pdf->Cell(50,10,'Mario Zelaya: ',0,1,'');
+
+$pdf->Cell(50,5,'',0,1,'');  // empty cell
+
+$pdf->SetFont('Arial','B',12);
+$pdf->SetFillColor(208,208,208);
+$pdf->Cell(100,8,'PRODUCT',1,0,'C',true); //190
+$pdf->Cell(20,8,'QTY',1,0,'C',true);
+$pdf->Cell(30,8,'PRICE',1,0,'C',true);
+$pdf->Cell(40,8,'TOTAL',1,1,'C',true);
+
+
+// Products details
+$pdf->SetFont('Arial','B',12);
+$pdf->Cell(100,8,'Iphone',1,0,'L'); //190
+$pdf->Cell(20,8,'1',1,0,'C');
+$pdf->Cell(30,8,'800',1,0,'C');
+$pdf->Cell(40,8,'800',1,1,'C');
+
+$pdf->SetFont('Arial','B',12);
+$pdf->Cell(100,8,'Samsung Note 10',1,0,'L'); //190
+$pdf->Cell(20,8,'1',1,0,'C');
+$pdf->Cell(30,8,'600',1,0,'C');
+$pdf->Cell(40,8,'800',1,1,'C');
+
+$pdf->SetFont('Arial','B',12);
+$pdf->Cell(100,8,'Kingston ext drive',1,0,'L'); //190
+$pdf->Cell(20,8,'2',1,0,'C');
+$pdf->Cell(30,8,'300',1,0,'C');
+$pdf->Cell(40,8,'600',1,1,'C');
+
+
+
 //output the result
 $pdf->Output();
 
