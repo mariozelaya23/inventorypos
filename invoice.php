@@ -89,6 +89,55 @@ $pdf->Cell(20,8,'2',1,0,'C');
 $pdf->Cell(30,8,'300',1,0,'C');
 $pdf->Cell(40,8,'600',1,1,'C');
 
+$pdf->SetFont('Arial','B',12);
+$pdf->Cell(100,8,'',0,0,'L'); //190
+$pdf->Cell(20,8,'',0,0,'C');
+$pdf->Cell(30,8,'SubTotal',1,0,'C', true);
+$pdf->Cell(40,8,'600',1,1,'C');
+
+$pdf->SetFont('Arial','B',12);
+$pdf->Cell(100,8,'',0,0,'L'); //190
+$pdf->Cell(20,8,'',0,0,'C');
+$pdf->Cell(30,8,'Tax',1,0,'C', true);
+$pdf->Cell(40,8,'60',1,1,'C');
+
+$pdf->SetFont('Arial','B',12);
+$pdf->Cell(100,8,'',0,0,'L'); //190
+$pdf->Cell(20,8,'',0,0,'C');
+$pdf->Cell(30,8,'Discount',1,0,'C', true);
+$pdf->Cell(40,8,'30',1,1,'C');
+
+$pdf->SetFont('Arial','B',14);
+$pdf->Cell(100,8,'',0,0,'L'); //190
+$pdf->Cell(20,8,'',0,0,'C');
+$pdf->Cell(30,8,'Total',1,0,'C', true);
+$pdf->Cell(40,8,'$'.'6600',1,1,'C');
+
+$pdf->SetFont('Arial','B',12);
+$pdf->Cell(100,8,'',0,0,'L'); //190
+$pdf->Cell(20,8,'',0,0,'C');
+$pdf->Cell(30,8,'Paid',1,0,'C', true);
+$pdf->Cell(40,8,'7000',1,1,'C');
+
+$pdf->SetFont('Arial','B',12);
+$pdf->Cell(100,8,'',0,0,'L'); //190
+$pdf->Cell(20,8,'',0,0,'C');
+$pdf->Cell(30,8,'Due',1,0,'C', true);
+$pdf->Cell(40,8,'400',1,1,'C');
+
+$pdf->SetFont('Arial','B',12);
+$pdf->Cell(100,8,'',0,0,'L'); //190
+$pdf->Cell(20,8,'',0,0,'C');
+$pdf->Cell(30,8,'Payment Type',1,0,'C', true);
+$pdf->Cell(40,8,'Cash',1,1,'C');
+
+$pdf->Cell(50,10,'',0,1,'');  // empty cell
+
+$pdf->SetFont('Arial','B',10);
+$pdf->Cell(32,10,'Important Notice :',0,0,'',true); 
+
+$pdf->SetFont('Arial','',8);
+$pdf->Cell(148,10,'No item will be replaced or refunded if you dont have the invoice with you.  You can refound within 2 days of purchase',0,0,''); 
 
 
 //output the result
